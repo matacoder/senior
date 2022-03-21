@@ -1,15 +1,65 @@
-# senior
-Python Questions for Senior and Lead roles
-
-Вопросы к ассессменту D3/D4
-
-Disclaimer: Многие вопросы встречаются на оба грейда. От D4 ожидается более глубокая техэкспертиза и больше опыта в разных процессах. Стоит прорабатывать все вопросы, даже если вы идете на D3.
+# Python Questions for Senior and Lead roles
 
 
-Матрица скиллов
+## Python General Information	
 
-Skill	L3	L4
-Python General Information	* Ways to execute Python code: exec, eval, ast, code, codeop, etc.
+### Ways to execute Python code: exec, eval, ast, code, codeop, etc.
+
+The `exec(object, globals, locals)` method executes the dynamically created program, which is either a string or a code object. Returns `None`. Only side effect matters!
+
+Example 1:
+```python
+program = 'a = 5\nb=10\nprint("Sum =", a+b)'
+exec(program)
+```
+```bash
+Sum = 15
+```
+
+Example 2:
+```python
+globals_parameter = {'__builtins__' : None}
+locals_parameter = {'print': print, 'dir': dir}
+exec('print(dir())', globals_parameter, locals_parameter)
+```
+```bash
+['dir', 'print']
+```
+
+The `eval(expression, globals=None, locals=None)` method parses the expression passed to this method and runs python expression (code) within the program. Returns the value of expression!
+
+```python
+>>> a = 5
+>>> eval('37 + a')   # it is an expression
+42
+>>> exec('37 + a')   # it is an expression statement; value is ignored (None is returned)
+>>> exec('a = 47')   # modify a global variable as a side effect
+>>> a
+47
+>>> eval('a = 47')  # you cannot evaluate a statement
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<string>", line 1
+    a = 47
+      ^
+SyntaxError: invalid syntax
+```
+
+If a `code` object (which contains Python bytecode) is passed to `exec` or `eval`, they behave identically, excepting for the fact that exec ignores the return value, still returning `None` always. So it is possible use `eval` to execute something that has statements, if you just compiled it into bytecode before instead of passing it as a string:
+```python
+>>> eval(compile('if 1: print("Hello")', '<string>', 'exec'))
+Hello
+>>>
+```
+
+`Abstract Syntax Trees`, ASTs, are a powerful feature of Python. You can write programs that inspect and modify Python code, after the syntax has been parsed, but before it gets compiled to byte code. That opens up a world of possibilities for introspection, testing, and mischief.
+
+In addition to compiling source code to bytecode, `compile` supports compiling abstract syntax trees (parse trees of Python code) into `code` objects; and source code into abstract syntax trees (the `ast.parse` is written in Python and just calls `compile(source, filename, mode, PyCF_ONLY_AST))`; these are used for example for modifying source code on the fly, and also for dynamic code creation, as it is often easier to handle the code as a tree of nodes instead of lines of text in complex cases.
+
+The `code` module provides facilities to implement read-eval-print loops in Python. Two classes and convenience functions are included which can be used to build applications which provide an **interactive interpreter prompt**.
+
+The `codeop` module provides utilities upon which the Python read-eval-print loop can be emulated, as is done in the `code` module. As a result, you probably don’t want to use the module directly; if you want to include such a loop in your program you probably want to use the code module instead.
+
 * Advanced differences  between 2.x and 3.x in general
 * six	
 Python Types and Operations	* deepcopy, method copy, slicing, etc.
