@@ -79,7 +79,12 @@ If we are planning to have Python 3.x support in our 2.x code, we can use _futur
 ### Six
 Six is a Python 2 and 3 compatibility library. It provides utility functions for smoothing over the differences between the Python versions with the goal of writing Python code that is compatible on both Python versions. See the documentation for more information on what is provided.
 
-Python Types and Operations	* deepcopy, method copy, slicing, etc.
+## `deepcopy`, method `copy`, slicing, etc.
+In the above code, the copy() returns a shallow copy of list and deepcopy() return a deep copy of list.
+Python `slice()` function returns a slice object. 
+
+A sequence of objects of any type(`string`, `bytes`, `tuple`, `list` or `range`) or the object which implements `__getitem__()` and `__len__()` method then this object can be sliced using `slice()` method.
+
 * ordereddict, defaultdict
 * hashable
 * Strong and weak typing
