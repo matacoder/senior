@@ -1,9 +1,6 @@
 # Python Questions for Senior and Lead roles
 
-
-## Python General Information	
-
-### Ways to execute Python code: exec, eval, ast, code, codeop, etc.
+## Ways to execute Python code: exec, eval, ast, code, codeop, etc.
 
 The `exec(object, globals, locals)` method executes the dynamically created program, which is either a string or a code object. Returns `None`. Only side effect matters!
 
@@ -60,7 +57,25 @@ The `code` module provides facilities to implement read-eval-print loops in Pyth
 
 The `codeop` module provides utilities upon which the Python read-eval-print loop can be emulated, as is done in the `code` module. As a result, you probably don’t want to use the module directly; if you want to include such a loop in your program you probably want to use the code module instead.
 
-* Advanced differences  between 2.x and 3.x in general
+## Advanced differences  between 2.x and 3.x in general
+
+### Division operator
+If we are porting our code or executing python 3.x code in python 2.x, it can be dangerous if integer division changes go unnoticed (since it doesn’t raise any error). It is preferred to use the floating value (like 7.0/5 or 7/5.0) to get the expected result when porting our code. 
+### `print` function
+This is the most well-known change. In this, the print keyword in Python 2.x is replaced by the print() function in Python 3.x. However, parentheses work in Python 2 if space is added after the print keyword because the interpreter evaluates it as an expression. 
+### Unicode
+In Python 2, an implicit str type is ASCII. But in Python 3.x implicit str type is Unicode. 
+
+### `xrange`
+xrange() of Python 2.x doesn’t exist in Python 3.x. In Python 2.x, range returns a list i.e. range(3) returns [0, 1, 2] while xrange returns a xrange object i. e., xrange(3) returns iterator object which works similar to Java iterator and generates number when needed. 
+
+### Error Handling
+There is a small change in error handling in both versions. In python 3.x, ‘as’ keyword is required. 
+
+### `_future_` module
+The idea of the __future__ module is to help migrate to Python 3.x. 
+If we are planning to have Python 3.x support in our 2.x code, we can use _future_ imports in our code. 
+
 * six	
 Python Types and Operations	* deepcopy, method copy, slicing, etc.
 * ordereddict, defaultdict
