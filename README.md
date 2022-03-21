@@ -217,10 +217,150 @@ Once when program is launched
 
 ## `partial`
 
+`functools.partial(func, /, *args, **keywords)`
 
-* decorators for functions, decorators for classes
-* wraps
-* passing args to decorators	* Indirect function calls
+Return a new partial object which when called will behave like func called with the positional arguments args and keyword arguments keywords. If more arguments are supplied to the call, they are appended to args. If additional keyword arguments are supplied, they extend and override keywords.
+
+## Best practice decorators for functions
+
+The basic idea is to use a function, but return a partial object of itself if it is called with parameters before being used as a decorator:
+
+```python
+from functools import wraps, partial
+
+def decorator(func=None, parameter1=None, parameter2=None):
+
+   if not func:
+        # The only drawback is that for functions there is no thing
+        # like "self" - we have to rely on the decorator 
+        # function name on the module namespace
+        return partial(decorator, parameter1=parameter1, parameter2=parameter2)
+   @wraps(func)
+   def wrapper(*args, **kwargs):
+        # Decorator code-  parameter1, etc... can be used 
+        # freely here
+        return func(*args, **kwargs)
+   return wrapper
+```
+And that is it - decorators written using this pattern can decorate a function right away without being "called" first:
+```python
+@decorator
+def my_func():
+    pass
+```
+Or customized with parameters:
+
+```python
+@decorator(parameter1="example.com", ...):
+def my_func():
+    pass
+```
+
+## Decorator
+
+```python
+import functools
+
+def require_authorization(f):
+    @functools.wraps(f)
+    def decorated(user, *args, **kwargs):
+        if not is_authorized(user):
+            raise UserIsNotAuthorized
+        return f(user, *args, **kwargs)
+    return decorated
+
+@require_authorization
+def check_email(user, etc):
+    # etc.
+```
+
+## Decorator factory (passing args to decorators)
+
+```python
+def require_authorization(action):
+    def decorate(f):
+        @functools.wraps(f):
+        def decorated(user, *args, **kwargs):
+            if not is_allowed_to(user, action):
+                raise UserIsNotAuthorized(action, user)
+            return f(user, *args, **kwargs)
+        return decorated
+    return decorate
+```
+
+## `wraps`
+
+Preserves original name of the function
+
+## Decorator for class
+1. Just use inheritance
+2. Use decorator, that returns class
+```python
+def addID(original_class):
+    orig_init = original_class.__init__
+    # Make copy of original __init__, so we can call it without recursion
+
+    def __init__(self, id, *args, **kws):
+        self.__id = id
+        self.getId = getId
+        orig_init(self, *args, **kws) # Call the original __init__
+
+    original_class.__init__ = __init__ # Set the class' __init__ to the new one
+    return original_class
+
+@addID
+class Foo:
+    pass
+```
+3. Use metaclass
+
+Indeed, metaclasses are especially useful to do black magic, and therefore complicated stuff. But by themselves, they are simple:
+
+* intercept a class creation
+* modify the class
+* return the modified class
+
+```python
+>>> class Foo(object):
+...       bar = True
+
+>>> Foo = type('Foo', (), {'bar':True})
+
+class UpperAttrMetaclass(type):
+    def __new__(cls, clsname, bases, attrs):
+        uppercase_attrs = {
+            attr if attr.startswith("__") else attr.upper(): v
+            for attr, v in attrs.items()
+        }
+        return type(clsname, bases, uppercase_attrs)
+```
+
+The main use case for a metaclass is creating an API. A typical example of this is the Django ORM.
+
+## Indirect function calls
+1) use another variable for this function
+2) use `partial`
+3) use as parameter `def indirect(func, *args)`
+4) use nested func and return it (functional approach)
+5) `eval("func_name()")` -> returns func result
+6) `exec("func_name()")` -> returns None
+7) importing module (assuming module foo with method bar):
+```python
+module = __import__('foo')
+func = getattr(module, 'bar')
+func()
+```
+8) `locals()["myfunction"]()`
+9) `globals()["myfunction"]()`
+10) dict()
+```python
+functions = {'myfoo': foo.bar}
+
+mystring = 'myfoo'
+if mystring in functions:
+    functions[mystring]()
+```
+
 * Function introspection
 * Implementation details of functional programming, for vs map
 * Function attributes
