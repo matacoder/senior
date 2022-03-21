@@ -85,8 +85,30 @@ Python `slice()` function returns a slice object.
 
 A sequence of objects of any type(`string`, `bytes`, `tuple`, `list` or `range`) or the object which implements `__getitem__()` and `__len__()` method then this object can be sliced using `slice()` method.
 
-* ordereddict, defaultdict
-* hashable
+## OrderedDict, DefaultDict
+An OrderedDict is a dictionary subclass that remembers the order that keys were first inserted. The only difference between dict() and OrderedDict() is that:
+
+`OrderedDict` preserves the order in which the keys are inserted. A regular dict doesn’t track the insertion order and iterating it gives the values in an arbitrary order. By contrast, the order the items are inserted is remembered by OrderedDict.
+
+`Defaultdict` is a container like dictionaries present in the module collections. `Defaultdict` is a sub-class of the dictionary class that returns a dictionary-like object. The functionality of both dictionaries and defaultdict are almost same except for the fact that defaultdict never raises a KeyError. It provides a default value for the key that does not exists.
+
+```python
+from collections import defaultdict
+
+def def_value():
+    return "Not Present"
+
+d = defaultdict(def_value)
+```
+
+## `hashable()`
+
+An object is hashable if it has a hash value that does not change during its entire lifetime. Python has a built-in hash method ( `__hash__()` ) that can be compared to other objects. For comparing it needs `__eq__()` or `__cmp__()` method and if the hashable objects are equal then they have the same hash value. All immutable built-in objects in Python are hashable like tuples while the mutable containers like lists and dictionaries are not hashable. 
+
+`lambda` and user functions are hashable.
+
+
+
 * Strong and weak typing
 * Frozenset
 * Weak references
