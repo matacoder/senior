@@ -107,9 +107,23 @@ An object is hashable if it has a hash value that does not change during its ent
 
 `lambda` and user functions are hashable.
 
+Objects hashed using `hash()` are irreversible, leading to loss of information.
+`hash()` returns hashed value only for immutable objects, hence can be used as an indicator to check for mutable/immutable objects.
 
+## Strong and weak typing
 
-* Strong and weak typing
+Python is strongly, dynamically typed.
+
+* **Strong** typing means that the type of a value doesn't change in unexpected ways. A string containing only digits doesn't magically become a number, as may happen in Perl. Every change of type requires an explicit conversion.
+* **Dynamic** typing means that runtime objects (values) have a type, as opposed to static typing where variables have a type.
+
+```python
+bob = 1
+bob = "bob"
+```
+
+This works because the variable does not have a type; it can name any object. After `bob = 1`, you'll find that `type(bob)` returns `int`, but after `bob = "bob"`, it returns `str`.
+
 * Frozenset
 * Weak references
 * Raw strings
