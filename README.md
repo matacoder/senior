@@ -114,7 +114,7 @@ Objects hashed using `hash()` are irreversible, leading to loss of information.
 
 Python is strongly, dynamically typed.
 
-* **Strong** typing means that the type of a value doesn't change in unexpected ways. A string containing only digits doesn't magically become a number, as may happen in Perl. Every change of type requires an explicit conversion.
+* **Strong** typing means that the type of value doesn't change in unexpected ways. A string containing only digits doesn't magically become a number, as may happen in Perl. Every change of type requires an explicit conversion.
 * **Dynamic** typing means that runtime objects (values) have a type, as opposed to static typing where variables have a type.
 
 ```python
@@ -124,11 +124,36 @@ bob = "bob"
 
 This works because the variable does not have a type; it can name any object. After `bob = 1`, you'll find that `type(bob)` returns `int`, but after `bob = "bob"`, it returns `str`.
 
-* Frozenset
-* Weak references
-* Raw strings
-* Unicode and ASCII strings	
-Python Statements and Syntax	* yield
+##Frozenset
+The `frozenset()` function returns an immutable frozenset object initialized with elements from the given iterable.
+
+Frozen set is just an immutable version of a Python `set` object. While elements of a set can be modified at any time, elements of the frozen set remain the same after creation.
+
+Due to this, frozen sets can be used as keys in Dictionary or as elements of another set. But like sets, it is not ordered (the elements can be set at any index).
+
+## Weak references
+Python contains the ``weakref`` module that creates a weak reference to an object. If there are no strong references to an object, the garbage collector is free to use the memory for other purposes.
+
+Weak references are used to implement caches and mappings that contain massive data.
+
+## Raw strings
+
+Python raw string is created by prefixing a string literal with ‘r’ or ‘R’. Python raw string treats backslash (\) as a literal character. This is useful when we want to have a string that contains backslash and don’t want it to be treated as an escape character.
+
+
+## Unicode and ASCII strings	
+
+Unicode is international standard where a mapping of individual characters and a unique number is maintained. As of May 2019, the most recent version of Unicode is 12.1 which contains over 137k characters including different scripts including English, Hindi, Chinese and Japanese, as well as emojis. These 137k characters are each represented by a unicode code point. So unicode code points refer to actual characters that are displayed.
+These code points are encoded to bytes and decoded from bytes back to code points. Examples: Unicode code point for alphabet a is U+0061, emoji 🖐 is U+1F590, and for Ω is U+03A9.
+
+The main takeaways in Python are:
+1. Python 2 uses str type to store bytes and unicode type to store unicode code points. All strings by default are `str` type — which is bytes~ And Default encoding is ASCII. So if an incoming file is Cyrillic characters, Python 2 might fail because ASCII will not be able to handle those Cyrillic Characters. In this case, we need to remember to use decode("utf-8") during reading of files. This is inconvenient.
+2. Python 3 came and fixed this. Strings are still `str` type by default but they now mean unicode code points instead — we carry what we see. If we want to store these `str` type strings in files we use bytes type instead. Default encoding is UTF-8 instead of ASCII. Perfect!
+
+# Python Statements and Syntax
+
+## yield
+
 * comprehensions vs generators
 * gen expressions
 * range vs xrange
