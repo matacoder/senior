@@ -76,7 +76,9 @@ There is a small change in error handling in both versions. In python 3.x, ‘as
 The idea of the __future__ module is to help migrate to Python 3.x. 
 If we are planning to have Python 3.x support in our 2.x code, we can use _future_ imports in our code. 
 
-* six	
+### Six
+Six is a Python 2 and 3 compatibility library. It provides utility functions for smoothing over the differences between the Python versions with the goal of writing Python code that is compatible on both Python versions. See the documentation for more information on what is provided.
+
 Python Types and Operations	* deepcopy, method copy, slicing, etc.
 * ordereddict, defaultdict
 * hashable
