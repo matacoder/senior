@@ -501,9 +501,71 @@ while True:
 ```
 
 # OOP in Python	
-* abstract base class
-* getattr(), setattr()
-* __getattr__, __setattr__, __delattr__
+## abstract base class
+
+They make sure that derived classes implement methods and properties dictated in the abstract base class.
+Abstract base classes separate the interface from the implementation. They define generic methods and properties that must be used in subclasses. Implementation is handled by the concrete subclasses where we can create objects that can handle tasks.
+They help to avoid bugs and make the class hierarchies easier to maintain by providing a strict recipe to follow for creating subclasses.
+
+```python
+from abc import ABCMeta, abstractmethod
+
+class AbstactClassCSV(metaclass = ABCMeta):  # or just inherits from ABC, helper class
+    def __init__(self, path, file_name):
+       self._path = path
+       self._file_name = file_name
+        
+    @property
+    @abstractmethod
+    def path(self):
+       pass  
+```
+
+## getattr(), setattr()
+
+`hasattr(object, name)` function:
+
+Determines whether an object has a name attribute or a name method, returns a bool value, returns True with a name attribute, or returns False.
+
+`getattr(object, name[,default])` function:
+
+Gets the property or method of the object, prints it if it exists, or prints the default value if it does not exist, which is optional.
+
+`setattr(object, name, values)` function:
+
+Assign a value to an object's property. If the property does not exist, create it before assigning it.
+
+## `__getattr__`, `__setattr__`, `__delattr__`
+
+```python
+>>> # this example uses __setattr__ to dynamically change attribute value to uppercase
+>>> class Frob:
+...     def __setattr__(self, name, value):
+...         self.__dict__[name] = value.upper()
+...
+>>> f = Frob()
+>>> f.bamf = "bamf"
+>>> f.bamf
+'BAMF'
+```
+
+Note that if the attribute is found through the normal mechanism, `__getattr__()` is not called. (This is an intentional asymmetry between `__getattr__()` and `__setattr__()`.) This is done both for efficiency reasons and because otherwise `__getattr__()` would have no way to access other attributes of the instance.
+
+```python
+>>> class Frob:
+...     def __init__(self, bamf):
+...         self.bamf = bamf
+...     def __getattr__(self, name):
+...         return 'Frob does not have `{}` attribute.'.format(str(name))
+...
+>>> f = Frob("bamf")
+>>> f.bar
+'Frob does not have `bar` attribute.'
+>>> f.bamf
+'bamf'
+```
+
+
 * __getattribute__
 * Name mangling
 * @property(getter, setter, deleter)
