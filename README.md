@@ -595,40 +595,81 @@ s1 = Student("Santhosh")
 print(s1._Student__name)
 ```
 
-
 ## @property(getter, setter, deleter)
-* init,  repr, str, cmp,  new , del,  hash, nonzero, unicode, class operators
-* Rich comparison methods
-* __call__
-* Multiple inheritance
-* Classic algorithm
-* Diamond problem
-* MRO, super
-* Mixins
-* metaclass definition
-* type(), isinstance(), issubclass()
-* __slots__	
-Troubleshooting in Python	* Types of profilers: Static and dynamic profilers
-* resources module	
-Exceptions in Python	* context managers contextlib decorator, with-enabled class
-* traces	
-Unit testing in Python	* Mock objects
-* Coverage
-* nosetests, doctests	
-Memory management in Python	* 3 generations of GC
-* which type of objects are tracked?
-* module gc
-* recommendations for GC usage	* Memory leaks/deleters issues
-Threading and multiprocessing in Python	* GIL (Definition, algorithms in 2.x and 3.x)
-* Threads(modules thread, threading; class Queue; locks)
-* Processes(multiprocessing, Process, Queue, Pipe, Value, Array, Pool, Manager)	* How to avoid GIL restrictions (C extensions)
-Distributing and documentation in Python	* distutils, setup.py	* code publishing
-* Documentation autogeneration: sphinx, pydoc, etc.
-Python and C interaction	* C ext API,call C from python, call python from C	* cffi, swig, SIP, boost-python
-Python tools		
-Python standard library	* Advanced knowledge of stndard library: math, random, re, sys, os, time,datetime, argparse, optparse, etc.	
-Code Standards		* Knows how to design and implement Code Standards
-Code Review Process	* Uses Code Review Best Practices (aims, feedback, reporting, periodicity, reviewers hierarchy)
+
+```python
+class Person:
+    def __init__(self, name):
+        self._name = name
+
+    @property
+    def name(self):
+        print('Getting name')
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        print('Setting name to ' + value)
+        self._name = value
+
+    @name.deleter
+    def name(self):
+        print('Deleting name')
+        del self._name
+
+p = Person('Adam')
+print('The name is:', p.name)
+p.name = 'John'
+del p.name
+```
+
+## init,  repr, str, cmp,  new , del,  hash, nonzero, unicode, class operators
+## Rich comparison methods
+## __call__
+## Multiple inheritance
+## Classic algorithm
+## Diamond problem
+## MRO, super
+## Mixins
+## metaclass definition
+## type(), isinstance(), issubclass()
+## __slots__	
+
+# Troubleshooting in Python	
+## Types of profilers: Static and dynamic profilers
+## resources module	
+# Exceptions in Python	
+## context managers contextlib decorator, with-enabled class
+## traces	
+# Unit testing in Python	
+## Mock objects
+## Coverage
+## nosetests, doctests	
+# Memory management in Pytho
+## 3 generations of GC
+## which type of objects are tracked?
+## module gc
+## recommendations for GC usage	* Memory leaks/deleters issues
+# Threading and multiprocessing in Python	
+## GIL (Definition, algorithms in 2.x and 3.x)
+## Threads(modules thread, threading; class Queue; locks)
+## Processes(multiprocessing, Process, Queue, Pipe, Value, Array, Pool, Manager)	* How to avoid GIL restrictions (C extensions)
+# Distributing and documentation in Python	
+## distutils, setup.py	
+## code publishing
+## Documentation autogeneration: sphinx, pydoc, etc.
+# Python and C interaction	
+## C ext API,call C from python, call python from C	
+## cffi, swig, SIP, boost-python
+# Python tools		
+## Python standard library	
+## Advanced knowledge of stndard library: math, random, re, sys, os, time,datetime, argparse, optparse, etc.	
+# Code Standards		
+## Knows how to design and implement Code Standards
+# Code Review Process	
+## Uses Code Review Best Practices (aims, feedback, reporting, periodicity, reviewers hierarchy)
+
+
 * Performs code review for "Merge/Pull requests" in GitLab
 * Performs code review with Atlassian Crucible
 * Knows Gerrit basics
