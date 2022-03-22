@@ -566,9 +566,37 @@ Note that if the attribute is found through the normal mechanism, `__getattr__()
 ```
 
 
-* __getattribute__
-* Name mangling
-* @property(getter, setter, deleter)
+## `__getattribute__`
+
+If the class also defines `__getattr__()`, the latter will not be called unless `__getattribute__()` either calls it explicitly or raises an AttributeError.
+
+```python
+>>> class Frob(object):
+...     def __getattribute__(self, name):
+...         print "getting `{}`".format(str(name))
+...         object.__getattribute__(self, name)
+...
+>>> f = Frob()
+>>> f.bamf = 10
+>>> f.bamf
+getting `bamf`
+```
+
+## Name mangling
+
+In name mangling process any identifier with two leading underscore and one trailing underscore is textually replaced with `_classname__identifier` where classname is the name of the current class. It means that any identifier of the form `__geek` (at least two leading underscores or at most one trailing underscore) is replaced with `_classname__geek`, where classname is the current class name with leading underscore(s) stripped.
+
+```python
+class Student:
+    def __init__(self, name):
+        self.__name = name
+  
+s1 = Student("Santhosh")
+print(s1._Student__name)
+```
+
+
+## @property(getter, setter, deleter)
 * init,  repr, str, cmp,  new , del,  hash, nonzero, unicode, class operators
 * Rich comparison methods
 * __call__
