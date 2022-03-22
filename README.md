@@ -474,9 +474,34 @@ The criteria that must be met to create closure in Python are summarized in the 
 - The nested function must refer to a value defined in the enclosing function.
 - The enclosing function must return the nested function.
 
-* globals() и locals():Meaning, could we change both of them?	
-Modules in Python		* module reload, importlib
-OOP in Python	* abstract base class
+Python Decorators make an extensive use of closures as well.
+
+## globals() и locals(): Meaning, could we change both of them?	
+
+- `globals()` always returns the dictionary of the module namespace
+- `locals()` always returns a dictionary of the current namespace
+- `vars()` returns either a dictionary of the current namespace (if called with no argument) or the dictionary of the argument.
+
+It does not automatically update when variables are assigned, and assigning entries in the dict will not assign the corresponding local variables.
+
+# Modules in Python		
+
+## Module `reload`, `importlib`
+
+Reload a previously imported module. The argument must be a module object, so it must have been successfully imported before. This is useful if you have edited the module source file using an external editor and want to try out the new version without leaving the Python interpreter. The return value is the module object (which can be different if re-importing causes a different object to be placed in sys.modules).
+
+```python
+from importlib import reload  # Python 3.4+
+import foo
+
+while True:
+    # Do some things.
+    if is_changed(foo):
+        foo = reload(foo)
+```
+
+# OOP in Python	
+* abstract base class
 * getattr(), setattr()
 * __getattr__, __setattr__, __delattr__
 * __getattribute__
