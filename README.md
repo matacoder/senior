@@ -939,17 +939,207 @@ for i in range(10 ** 8):
    _ = 1 + 1
 print(getrusage(RUSAGE_SELF))
 ```
-# Exceptions in Python	
+
 ## context managers contextlib decorator, with-enabled class
-## traces	
+
+The with statement in Python is a quite useful tool for properly managing external resources in your programs. It allows you to take advantage of existing context managers to automatically handle the setup and teardown phases whenever you’re dealing with external resources or with operations that require those phases.
+
+Besides, the context management protocol allows you to create your own context managers so you can customize the way you deal with system resources. So, what’s the with statement good for?
+
+```python
+# writable.py
+
+class WritableFile:
+    def __init__(self, file_path):
+        self.file_path = file_path
+
+    def __enter__(self):
+        self.file_obj = open(self.file_path, mode="w")
+        return self.file_obj
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.file_obj:
+            self.file_obj.close()
+```
+
+```python
+>>> from contextlib import contextmanager
+
+>>> @contextmanager
+... def writable_file(file_path):
+...     file = open(file_path, mode="w")
+...     try:
+...         yield file
+...     finally:
+...         file.close()
+...
+
+>>> with writable_file("hello.txt") as file:
+...     file.write("Hello, World!")
+```
+
+```python
+# site_checker_v1.py
+
+import aiohttp
+import asyncio
+
+class AsyncSession:
+    def __init__(self, url):
+        self._url = url
+
+    async def __aenter__(self):
+        self.session = aiohttp.ClientSession()
+        response = await self.session.get(self._url)
+        return response
+
+    async def __aexit__(self, exc_type, exc_value, exc_tb):
+        await self.session.close()
+
+async def check(url):
+    async with AsyncSession(url) as response:
+        print(f"{url}: status -> {response.status}")
+        html = await response.text()
+        print(f"{url}: type -> {html[:17].strip()}")
+
+async def main():
+    await asyncio.gather(
+        check("https://realpython.com"),
+        check("https://pycoders.com"),
+    )
+
+asyncio.run(main())
+```
+
 # Unit testing in Python	
 ## Mock objects
+
+A mock object substitutes and imitates a real object within a testing environment. It is a versatile and powerful tool for improving the quality of your tests.
+
+One reason to use Python mock objects is to control your code’s behavior during testing.
+
+For example, if your code makes HTTP requests to external services, then your tests execute predictably only so far as the services are behaving as you expected. Sometimes, a temporary change in the behavior of these external services can cause intermittent failures within your test suite.
+
+```python
+>>> from unittest.mock import Mock
+>>> mock = Mock()
+>>> mock
+<Mock id='4561344720'>
+```
+
+A Mock must simulate any object that it replaces. To achieve such flexibility, it creates its attributes when you access them.
+
+```python
+>>> from unittest.mock import Mock
+
+>>> # Create a mock object
+... json = Mock()
+
+>>> json.loads('{"key": "value"}')
+<Mock name='mock.loads()' id='4550144184'>
+
+>>> # You know that you called loads() so you can
+>>> # make assertions to test that expectation
+... json.loads.assert_called()
+>>> json.loads.assert_called_once()
+>>> json.loads.assert_called_with('{"key": "value"}')
+>>> json.loads.assert_called_once_with('{"key": "value"}')
+```
+
+```python
+datetime = Mock()
+datetime.datetime.today.return_value = "tuesday"
+requests = Mock()
+requests.get.side_effect = Timeout
+```
+
+```python
+@patch('my_calendar.requests')
+    def test_get_holidays_timeout(self, mock_requests):
+            mock_requests.get.side_effect = Timeout
+```
+or
+```python
+with patch('my_calendar.requests') as mock_requests:
+            mock_requests.get.side_effect = Timeout
+```
+
+And there are MagicMock and Async Mock as well.
+
 ## Coverage
+
+Coverage.py is one of the most popular code coverage tools for Python. It uses code analysis tools and tracing hooks provided in Python standard library to measure coverage. It runs on major versions of CPython, PyPy, Jython and IronPython. You can use Coverage.py with both unittest and Pytest.
+
 ## nosetests, doctests	
-# Memory management in Pytho
+
+`nose2` is the successor to nose.  It’s unittest with plugins.
+
+`nose2` is a new project and does not support all of the features of nose. See differences for a thorough rundown.
+
+`nose2`’s purpose is to extend unittest to make testing nicer and easier to understand.
+
+nose2 vs pytest
+nose2 may or may not be a good fit for your project.
+
+If you are new to python testing, we encourage you to also consider `pytest`, a popular testing framework.
+
+The doctest module searches for pieces of text that look like interactive Python sessions, and then executes those sessions to verify that they work exactly as shown. There are several common ways to use doctest:
+
+- To check that a module’s docstrings are up-to-date by verifying that all interactive examples still work as documented.
+
+- To perform regression testing by verifying that interactive examples from a test file or a test object work as expected.
+
+- To write tutorial documentation for a package, liberally illustrated with input-output examples. Depending on whether the examples or the expository text are emphasized, this has the flavor of “literate testing” or “executable documentation”.
+
+`python example.py -v`
+
+# Memory management in Python
+
 ## 3 generations of GC
-## which type of objects are tracked?
-## module gc
+
+The main garbage collection algorithm used by CPython is reference counting. The basic idea is that CPython counts how many different places there are that have a reference to an object. Such a place could be another object, or a global (or static) C variable, or a local variable in some C function. When an object’s reference count becomes zero, the object is deallocated. If it contains references to other objects, their reference counts are decremented. Those other objects may be deallocated in turn, if this decrement makes their reference count become zero, and so on. The reference count field can be examined using the sys.getrefcount function (notice that the value returned by this function is always 1 more as the function also has a reference to the object when called):
+```python
+x = object()
+sys.getrefcount(x)
+2
+y = x
+sys.getrefcount(x)
+3
+del y
+sys.getrefcount(x)
+2
+```
+
+The main problem with the reference counting scheme is that it does not handle reference cycles. For instance, consider this code:
+```python
+container = []
+container.append(container)
+sys.getrefcount(container)
+3
+del container
+```
+
+In this example, container holds a reference to itself, so even when we remove our reference to it (the variable “container”) the reference count never falls to 0 because it still has its own internal reference. Therefore it would never be cleaned just by simple reference counting. For this reason some additional machinery is needed to clean these reference cycles between objects once they become unreachable. This is the cyclic garbage collector, usually called just Garbage Collector (GC), even though reference counting is also a form of garbage collection.
+
+In order to limit the time each garbage collection takes, the GC uses a popular optimization: generations. The main idea behind this concept is the assumption that most objects have a very short lifespan and can thus be collected shortly after their creation. This has proven to be very close to the reality of many Python programs as many temporary objects are created and destroyed very fast. The older an object is the less likely it is that it will become unreachable.
+
+To take advantage of this fact, all container objects are segregated into three spaces/generations. Every new object starts in the first generation (generation 0). The previous algorithm is executed only over the objects of a particular generation and if an object survives a collection of its generation it will be moved to the next one (generation 1), where it will be surveyed for collection less often. If the same object survives another GC round in this new generation (generation 1) it will be moved to the last generation (generation 2) where it will be surveyed the least often.
+
+Generations are collected when the number of objects that they contain reaches some predefined threshold, which is unique for each generation and is lower the older the generations are. These thresholds can be examined using the gc.get_threshold function:
+
+### module gc
+
+```python
+import gc
+gc.get_threshold()
+(700, 10, 10)
+```
+
+
+### Which type of objects are tracked?
+ For this reason some additional machinery is needed to clean these reference cycles between objects once they become unreachable. This is the cyclic garbage collector, usually called just Garbage Collector (GC), even though reference counting is also a form of garbage collection.
+
+
 ## recommendations for GC usage	* Memory leaks/deleters issues
 # Threading and multiprocessing in Python	
 ## GIL (Definition, algorithms in 2.x and 3.x)
