@@ -1134,17 +1134,250 @@ import gc
 gc.get_threshold()
 (700, 10, 10)
 ```
+```python
+>>> import gc
+>>> gc.get_count()
+(596, 2, 1)
+```
 
+You can trigger a manual garbage collection process by using the `gc.collect()` method
+
+```python
+import gc
+class MyObj:
+    pass
+
+
+# Move everything to the last generation so it's easier to inspect
+# the younger generations.
+
+gc.collect()
+0
+
+# Create a reference cycle.
+
+x = MyObj()
+x.self = x
+
+# Initially the object is in the youngest generation.
+
+gc.get_objects(generation=0)
+[..., <__main__.MyObj object at 0x7fbcc12a3400>, ...]
+
+# After a collection of the youngest generation the object
+# moves to the next generation.
+
+gc.collect(generation=0)
+0
+gc.get_objects(generation=0)
+[]
+gc.get_objects(generation=1)
+[..., <__main__.MyObj object at 0x7fbcc12a3400>, ...]
+```
+The garbage collector module provides the Python function is_tracked(obj), which returns the current tracking status of the object.
 
 ### Which type of objects are tracked?
  For this reason some additional machinery is needed to clean these reference cycles between objects once they become unreachable. This is the cyclic garbage collector, usually called just Garbage Collector (GC), even though reference counting is also a form of garbage collection.
 
+As a general rule, instances of atomic types aren’t tracked and instances of non-atomic types (containers, user-defined objects…) are. However, some type-specific optimizations can be present in order to suppress the garbage collector footprint of simple instances. Some examples of native types that benefit from delayed tracking:
 
-## recommendations for GC usage	* Memory leaks/deleters issues
+Tuples containing only immutable objects (integers, strings etc, and recursively, tuples of immutable objects) do not need to be tracked
+
+Dictionaries containing only immutable objects also do not need to be tracked
+
+## recommendations for GC usage	
+
+General rule: Don’t change garbage collector behavior
+
+## Memory leaks/deleters issues
+
+The Python program, just like other programming languages, experiences memory leaks. Memory leaks in Python happen if the garbage collector doesn’t clean and eliminate the unreferenced or unused data from Python.
+
+Python developers have tried to address memory leaks through the addition of features that free unused memory automatically.
+
+However, some unreferenced objects may pass through the garbage collector unharmed, resulting in memory leaks.
+
 # Threading and multiprocessing in Python	
 ## GIL (Definition, algorithms in 2.x and 3.x)
+
+The mechanism used by the CPython interpreter to assure that only one thread executes Python bytecode at a time. This simplifies the CPython implementation by making the object model (including critical built-in types such as dict) implicitly safe against concurrent access. Locking the entire interpreter makes it easier for the interpreter to be multi-threaded, at the expense of much of the parallelism afforded by multi-processor machines.
+
+However, some extension modules, either standard or third-party, are designed so as to release the GIL when doing computationally-intensive tasks such as compression or hashing. Also, the GIL is always released when doing I/O.
+
+Past efforts to create a “free-threaded” interpreter (one which locks shared data at a much finer granularity) have not been successful because performance suffered in the common single-processor case. It is believed that overcoming this performance issue would make the implementation much more complicated and therefore costlier to maintain.
+
+```python
+>>> import sys
+>>> # The interval is set to 100 instructions:
+>>> sys.getcheckinterval()
+100
+```
+
+The problem in this mechanism was that most of the time the CPU-bound thread would reacquire the GIL itself before other threads could acquire it. This was researched by David Beazley and visualizations can be found here.
+
+This problem was fixed in Python 3.2 in 2009 by Antoine Pitrou who added a mechanism of looking at the number of GIL acquisition requests by other threads that got dropped and not allowing the current thread to reacquire GIL before other threads got a chance to run.
+
+
 ## Threads(modules thread, threading; class Queue; locks)
-## Processes(multiprocessing, Process, Queue, Pipe, Value, Array, Pool, Manager)	* How to avoid GIL restrictions (C extensions)
+Straight forward:
+```python
+from time import sleep, perf_counter
+from threading import Thread
+
+def task():
+    print('Starting a task...')
+    sleep(1)
+    print('done')
+
+start_time = perf_counter()
+
+# create two new threads
+t1 = Thread(target=task)
+t2 = Thread(target=task)
+
+# start the threads
+t1.start()
+t2.start()
+
+# wait for the threads to complete
+t1.join()
+t2.join()
+
+end_time = perf_counter()
+
+print(f'It took {end_time- start_time: 0.2f} second(s) to complete.')
+```
+
+Better:
+
+```python
+from concurrent.futures import ThreadPoolExecutor
+from time import sleep
+ 
+values = [3,4,5,6]
+ 
+def cube(x):
+    print(f'Cube of {x}:{x*x*x}')
+ 
+ 
+if __name__ == '__main__':
+    result =[]
+    with ThreadPoolExecutor(max_workers=5) as exe:
+        exe.submit(cube,2)
+         
+        # Maps the method 'cube' with a list of values.
+        result = exe.map(cube,values)
+     
+    for r in result:
+      print(r)
+```
+
+Operations associated with `queue.Queue` are: 
+
+- `maxsize` – Number of items allowed in the queue.
+- `empty()` – Return True if the queue is empty, False otherwise.
+- `full()` – Return True if there are maxsize items in the queue. If the queue was initialized with maxsize=0 (the default), then full() never returns True.
+- `get()` – Remove and return an item from the queue. If queue is empty, wait until an item is available.
+- `get_nowait()` – Return an item if one is immediately available, else raise QueueEmpty.
+- `put(item)` – Put an item into the queue. If the queue is full, wait until a free slot is available before adding the item.
+- `put_nowait(item)` – Put an item into the queue without blocking. If no free slot is immediately available, raise QueueFull.
+- `qsize()` – Return the number of items in the queue.
+
+## Processes(multiprocessing, Process, Queue, Pipe, Value, Array, Pool, Manager)	
+
+Simple case:
+
+```python
+#!/usr/bin/python
+
+from multiprocessing import Process
+import time
+
+def fun():
+
+    print('starting fun')
+    time.sleep(2)
+    print('finishing fun')
+
+def main():
+
+    p = Process(target=fun)
+    p.start()
+    p.join()
+
+
+if __name__ == '__main__':
+
+    print('starting main')
+    main()
+    print('finishing main')
+```
+
+Nice pool:
+
+```python
+#!/usr/bin/python
+
+import time
+from timeit import default_timer as timer
+from multiprocessing import Pool, cpu_count
+
+def square(n):
+    time.sleep(2)
+    return n * n
+
+def main():
+    start = timer()
+    print(f'starting computations on {cpu_count()} cores')
+    values = (2, 4, 6, 8)
+
+    with Pool() as pool:
+        res = pool.map(square, values)
+        print(res)
+
+    end = timer()
+    print(f'elapsed time: {end - start}')
+
+if __name__ == '__main__':
+    main()
+```
+
+`pipes` — Interface to shell pipelines. The pipes module defines a class to abstract the concept of a pipeline — a sequence of converters from one file to another.
+
+
+
+## How to avoid GIL restrictions (C extensions)
+
+Only C treads:
+```javascript
+#include "Python.h"
+...
+PyObject *pyfunc(PyObject *self, PyObject *args)
+{
+    ...
+    Py_BEGIN_ALLOW_THREADS
+      
+    // Threaded C code. 
+    // Must not use Python API functions
+    ...
+    Py_END_ALLOW_THREADS
+    ...
+    return result;
+}
+```
+Mixing C and Python (please don't do it without glasses):
+
+```javascript
+include <Python.h>
+...
+if (!PyEval_ThreadsInitialized())
+{
+    PyEval_InitThreads();
+}
+...
+```
+
+
 # Distributing and documentation in Python	
 ## distutils, setup.py	
 ## code publishing
