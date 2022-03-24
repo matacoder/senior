@@ -1748,6 +1748,38 @@ Both Nexus Repository Manager Pro and Nexus Repository Manager OSS support proxy
 
 ## Branching strategy
 
+https://www.bmc.com/blogs/devops-branching-strategies
+
+### Git Flow
+Git Flow is the most widely known branching strategy that takes a multi-branch approach to manage the source code. This approach consists of two main branches that live throughout the development lifecycle.
+
+Primary Branches
+- `master`. The primary branch where all the production code is stored. Once the code in the “develop” branch is ready to be released, the changes are merged to the master branch and used in the deployment.
+- `develop`. This is where all the actual development happens. All the pre-production code is stored here, and the completed code of all the supporting branches is merged directly to the develop branch.
+- `feature-*` feature branches are used to develop new features and branches off exclusively from the develop branch.
+- `hotfix-*` This is to deal with production issues where quick fixes are required. They can branch off from the master itself, but need to be merged to both master and develop branches.
+- `release-*` This branch is used to aggregate fixes and improvements and prepare for the production release. It will be branched from the develop branch and merged to both develop and master.
+
+### GitHub Flow
+As the name suggests, this strategy was introduced by GitHub, aiming to provide a simple and lightweight approach to manage the development. It adheres to the following guidelines when managing the source control with a single primary branch.
+
+- `master`. The primary branch where code is branched off from and merged to. Anything in the master branch is deployable.
+- Any change (feature/bug) is made in a new branch derived from the master with a descriptive branch name describing the development.
+- Commit to the development branch locally and regularly push to the branch.
+- Create a pull request once the development is done so that the code can be reviewed.
+- Once the code is reviewed and approved, it must be tested in the branch before merging to the master branch.
+- From this point, users can immediately deploy the master branch with the new changes.
+
+### Trunk Based Development (TBD)
+The Trunk Based Development strategy involves developers integrating their changes directly into a shared trunk (master) at least once a day. This shared trunk is always in a releasable state. Developers can pull from this trunk, create a local repository, and then push the code to the shared trunk.
+
+This regular integration enables developers to view each other’s changes quickly and immediately react if there are any conflicts.
+
+### GitLab Flow
+The GitLab strategy combines feature-driven development and feature branches with issue tracking. This strategy is similar to GitHub flow yet includes environmental branches such as `development`, `pre-production`, and `production`.
+
+In GitLab Flow, development happens in one of these environmental branches, and verified and tested code is merged to other branches until they reach the production branch. Let’s assume that we have the three environmental branches mentioned above. In that case, the development workflow will be:
+
 ## Continuous Integration	
 * Follows CI rules (use project's CI tools, immediately fix broken build, etc.)	
 * Writes/Updates build configuration script
