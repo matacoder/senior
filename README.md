@@ -1,5 +1,7 @@
 # Python Questions for Senior and Lead roles
 
+<img src="https://user-images.githubusercontent.com/67960818/159924991-ad7ac6de-facf-4cb0-a8c9-31a7407fb9e4.png" alt="python-logo-master-v3-TM-flattened" style="max-width: 100%;">
+
 ## Ways to execute Python code: exec, eval, ast, code, codeop, etc.
 
 The `exec(object, globals, locals)` method executes the dynamically created program, which is either a string or a code object. Returns `None`. Only side effect matters!
