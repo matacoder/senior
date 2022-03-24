@@ -1611,54 +1611,184 @@ That's it. We're done. We can now build this as a shared library. The resulting 
 >>> print hello_ext.greet()
 hello, world
 ```
-# Python tools		
+
+# Python tools
+
 ## Python standard library	
-## Advanced knowledge of stndard library: math, random, re, sys, os, time,datetime, argparse, optparse, etc.	
-# Code Standards		
-## Knows how to design and implement Code Standards
-# Code Review Process	
-## Uses Code Review Best Practices (aims, feedback, reporting, periodicity, reviewers hierarchy)
 
+https://docs.python.org/3/library/
 
+Just read their names and short descriptions at least. You would be surprised how many task you can do with pure python.
+
+## Advanced knowledge of standard library: 
+- `math` This module provides access to the mathematical functions defined by the C standard. https://docs.python.org/3/library/math.html
+- `random` This module implements pseudo-random number generators for various distributions. https://docs.python.org/3/library/random.html
+- `re`  This module provides regular expression matching operations similar to those found in Perl. https://docs.python.org/3/library/re.html
+- `sys` This module provides access to some variables used or maintained by the interpreter and to functions that interact strongly with the interpreter. It is always available. https://docs.python.org/3/library/sys.html
+- `os` This module provides a portable way of using operating system dependent functionality. If you just want to read or write a file see open(), if you want to manipulate paths, see the os.path module, and if you want to read all the lines in all the files on the command line see the fileinput module. For creating temporary files and directories see the tempfile module, and for high-level file and directory handling see the shutil module. https://docs.python.org/3/library/os.html
+- `time`, 
+- `datetime`, 
+- `argparse` Parser for command-line options, arguments and sub-commands https://docs.python.org/3/library/argparse.html
+- `optparse` Deprecated since version 3.2: The optparse module is deprecated and will not be developed further; development will continue with the argparse module.
+
+# Code Standards
+
+## Knows how to design and implement Code Standards (PEP8)
+
+https://realpython.com/python-pep8/
+
+# Code Review Process
+
+What to know:
+
+* Code Review Best Practices (aims, feedback, reporting, periodicity, reviewers hierarchy)
 * Performs code review for "Merge/Pull requests" in GitLab
 * Performs code review with Atlassian Crucible
-* Knows Gerrit basics
-* Explains Pros and Cons of Pre- and Post-commit Code Reviews
-* Implements and improves Code Review process on the project	
-Release Strategy	* Understands purpose of branching
-* Explains Centralized (Trunk Based) approach
-* Explains GitFlow approach
-* Understands "Infrastructure as a Code" concept
-* Understands Dependency Management problems
-* Describes possible approaches for dependency management
-* Knows advantages of build repository tools like NuGet, Artifactory and Nexus
-* Implements and improves Branching strategy on the project
-* Drives proper environments setup (production like, numbers of environments, etc.)	
-Continuous Integration	* Follows CI rules (use project's CI tools, immediately fix broken build, etc.)	* Writes/Updates build configuration script
+* Gerrit  (online code review) https://gerrit-documentation.storage.googleapis.com/Documentation/3.5.1/intro-how-gerrit-works.html
+
+Gerrit is a Git server that provides access control for the hosted Git repositories and a web front-end for doing code review. Code review is a core functionality of Gerrit, but still it is optional and teams can decide to work without code review.
+
+## Explains Pros and Cons of Pre- and Post-commit Code Reviews
+
+In this regard, there are two types of code review: pre-commit and post-commit. Pre- and post-commit review concepts are quite self-explanatory: pre-commit is a type of review when the code is reviewed before it goes to the main repository of the version control system. Post-commit review takes place after the code has been submitted to the public repository.
+
+Have a look at some of the advantages and disadvantages of these two review types before deciding which one to adopt.
+Pros of pre-commit:
+- Company's coding quality standards are met before the work is committed to the main repository
+This scenario helps to make sure the review has been performed, not postponed or omitted
+- Pre-commit reviews ensure other developers in your team won't be affected by bugs that may be found during a review
+
+Cons of pre-commit:
+- Decreases productivity of each developer, since further work on the submitted code is impossible until a successful review, and takes even longer if multiple reviewers are involved
+- After successfully passing a review, the developer could commit a different piece of code , by mistake or otherwise
+
+Pros of post-commit:
+- A developer can work and commit changes to the repository continuously
+- Other team members see the code changes and can alter their work accordingly
+- Some changes can be complex and require multiple steps, so it's convenient to examine each step separately after all of them have been committed
+
+Cons of post-commit:
+- Increased chances of poor code making it into the main repository, hence affecting the entire team's work
+- When defects are found, it may take a while for the developer to switch back to the module they had been working on
+
+# Release Strategy	
+## Centralized (Trunk Based) approach
+
+Trunk-based development is a version control management practice where developers merge small, frequent updates to a core “trunk” or main branch. Since it streamlines merging and integration phases, it helps achieve CI/CD and increases software delivery and organizational performance.
+
+## GitFlow approach
+
+Giflow is an alternative Git branching model that involves the use of feature branches and multiple primary branches. It was first published and made popular by Vincent Driessen at nvie. Compared to trunk-based development, Giflow has numerous, longer-lived branches and larger commits. Under this model, developers create a feature branch and delay merging it to the main trunk branch until the feature is complete. These long-lived feature branches require more collaboration to merge and have a higher risk of deviating from the trunk branch. They can also introduce conflicting updates.
+
+Some key takeaways to know about Gitflow are:
+
+- The workflow is great for a release-based software workflow.
+- Gitflow offers a dedicated channel for hotfixes to production.
+ 
+The overall flow of Gitflow is:
+
+- A develop branch is created from main
+- A release branch is created from develop
+- Feature branches are created from develop
+- When a feature is complete it is merged into the develop branch
+- When the release branch is done it is merged into develop and main
+- If an issue in main is detected a hotfix branch is created from main
+- Once the hotfix is complete it is merged to both develop and main
+
+## "Infrastructure as a Code" concept - Ansible / Ansible Tower
+
+Infrastructure as code (IaC) is the process of managing and provisioning computer data centers through machine-readable definition files, rather than physical hardware configuration or interactive configuration tools. The IT infrastructure managed by this process comprises both physical equipment, such as bare-metal servers, as well as virtual machines, and associated configuration resources. The definitions may be in a version control system. The code in the definition files may use either scripts or declarative definitions, rather than maintaining the code through manual processes, but IaC more often employs declarative approaches.
+
+## Dependency Management approaches
+
+* Identify and visualize
+* Engage with stakeholders
+* Make a risk log
+* Make contingency plans
+
+1. `Logical dependencies`. Also known as causal dependencies. These dependencies are an inherent part of the project and cannot be avoided. Tasks characterized as logical dependency usually use the output of the preceding tasks as input so you can’t run them in parallel. Consider baking a cake as your project. You can’t start the process unless you have all the ingredients you need.
+
+2. `Resource dependencies`. This dependency originates from a project constraint as it deals with the availability of shared resources. If two tasks require the same resource for completion, then they’ll be dependent on the completion of the other.
+
+3. `Preferential dependencies`. These dependencies generally depend on the team members,  other stakeholders, and industrial practices. Preferential dependencies arise when tasks are scheduled to follow developed standard practices. In most cases, the project can compete even if you ignore the preferential dependencies in your tasks, but there will be some quality issues.
+
+4. `External dependencies`. No matter how much you plan, there are things bound to be out of your control. Some tasks are dependent on outside factors and project managers can’t do anything to influence their project progress. To deal with these dependencies, it’s recommended to have a backup plan. Delays from the suppliers or other unforeseen circumstances may take place which can affect your progress. A good project manager always makes some contingency plans so everything keeps running smoothly even in the face of adversity.
+
+5. `Cross-team dependencies`. This is a common occurrence in large organizations. Sometimes multiple teams work on a single, complex project and they rely on each other to complete the project on time. Effective project time management can be implemented to avoid long hours.
+
+`Pipenv` is a dependency manager for Python projects. If you’re familiar with Node.js’ npm or Ruby’s bundler, it is similar in spirit to those tools. While pip alone is often sufficient for personal use, Pipenv is recommended for collaborative projects as it’s a higher-level tool that simplifies dependency management for common use cases.
+
+`hatch` for opinionated coverage of even more steps in the project management workflow, such as incrementing versions, tagging releases, and creating new skeleton projects from project templates.
+
+`micropipenv` for a lightweight wrapper around pip that supports requirements.txt, Pipenv and Poetry lock files, or converting them to pip-tools compatible output. Designed for containerized Python applications, but not limited to them.
+
+`PDM` for a modern Python package management tool supporting PEP 582 (replacing virtual environments with __pypackages__ directory for package installation) and relying on standards such as PEP 517 and PEP 621.
+
+`pip-tools` for creating a lock file of all dependencies from a list of packages directly used in a project, and ensuring that only those dependencies are installed.
+
+`Poetry` for a tool comparable in scope to Pipenv that focuses more directly on use cases where the project being managed is structured as a distributable Python package with a valid `pyproject.toml` file. By contrast, Pipenv explicitly avoids making the assumption that the application being worked on will support distribution as a pip-installable Python package.
+
+
+## NuGet, Artifactory and Nexus
+
+`nuget` NuGet is the package manager for .NET. The NuGet client tools provide the ability to produce and consume packages. The NuGet Gallery is the central package repository used by all package authors and consumers. https://www.nuget.org/ https://www.nuget.org/packages/python
+ 
+`Artifactory`  https://www.jfrog.com/confluence/display/JFROG/PyPI+Repositories
+Artifactory fully supports PyPI repositories providing:
+
+- The ability to provision PyPI packages from Artifactory to the pip command line tool from all repository types.
+- Calculation of Metadata for PyPI packages hosted in Artifactory's local repositories.
+- Access to remote PyPI repositories (such as https://pypi.org/) through a Remote Repositories which provides proxy and caching functionality.
+- The ability to access multiple PyPI repositories from a single URL by aggregating them under a Virtual Repositories.
+- Compatibility with the setuptools and its predecessor distutils libraries for uploading PyPI packages.
+
+`nexus`https://help.sonatype.com/repomanager3/nexus-repository-administration/formats/pypi-repositories
+
+Both Nexus Repository Manager Pro and Nexus Repository Manager OSS support proxying the Python Package Index. This allows the repository manager to take advantage of the packages in the official Python Package Index without incurring repeated downloads. This will reduce time and bandwidth usage for accessing Python packages.
+
+## Branching strategy
+
+## Continuous Integration	
+* Follows CI rules (use project's CI tools, immediately fix broken build, etc.)	
+* Writes/Updates build configuration script
 * Implements and improves CI processes on the project
-Continuous Delivery & Deployment		* Has experience with Delivery Pipeline usage
-Unit and API Testing (White box)	* Explains purpose of test coverage. Understand how to treat this metric
-Knows types of coverage (line, method, etc.)
-* Uses both TDD and BDD approaches
-Implements TDD and BDD from scratch	* Designs/Implements tests framework for legacy systems
-* Understands the purpose of mutation testing, knows the tools
-Logging		
-Health Check	* Explains main approaches for monitoring	
-Troubleshooting		
-Leadership	* Has followers (recognized as leader at least by 2 people upon feedback from peers or by manager's observations)
+## Continuous Delivery & Deployment		
+* Has experience with Delivery Pipeline usage
+
+# Unit and API Testing (White box)	
+## Test coverage. Understand how to treat this metric
+## Knows types of coverage (line, method, etc.)
+## TDD and BDD approaches (Implements TDD and BDD from scratch)
+## Designs/Implements tests framework for legacy systems
+## Mutation testing, tools
+
+# Logging
+
+## Health Check	
+## Main approaches for monitoring	
+## Troubleshooting
+
+# Skills:
+## Leadership	
+* Has followers (recognized as leader at least by 2 people upon feedback from peers or by manager's observations)
 * Focuses the group on common goal and takes responsibility for team/group result.
 * Is able to organize teamwork effectively and engage employees in teamwork	
-Planning and Organizing	* Prioritizing of activities and assignments, adjusts priorities when appropriate;
+## Planning and Organizing	
+* Prioritizing of activities and assignments, adjusts priorities when appropriate;
 * Determines assignment requirements by breaking them down into concrete tasks
 * Allocates appropriate amounts of time for completing own and others' work.	
-Delegation	* Delegates task responsibility to appropriate subordinates (considering positive and negative impact of delegation);
-* Defines and communicates basic parameters of delegated tasks (milestones and deadlines, type of control, expected results).	* Delegates based on a team member’s capabilities, experience, reliability and motivation.
+## Delegation	
+* Delegates task responsibility to appropriate subordinates (considering positive and negative impact of delegation);
+* Defines and communicates basic parameters of delegated tasks (milestones and deadlines, type of control, expected results).	
+* Delegates based on a team member’s capabilities, experience, reliability and motivation.
 * Clearly communicates all the parameters of the delegated responsibility, including definite goal, concrete success criteria, decision-making authority , constraints, etc., giving reasonable freedom in details
 * Establishes appropriate procedures to be informed of issues and results in areas of shared responsibility.
 * Knows what kind of work can be and shouldn't be delegated.
-Control	* Controls assignments in his direct line supervision (ex. performed in his project by direct reporters) using simple type of control (ex. weekly report or daily meeting).
+## Control	
+* Controls assignments in his direct line supervision (ex. performed in his project by direct reporters) using simple type of control (ex. weekly report or daily meeting).
 * Asks questions to obtain relevant information and gets feedback on results from those who are directly involved.	
-Coordination		* Coordinates efforts and actions within one project between individuals in the project team, the project team and its internal and external partners.
+## Coordination		
+* Coordinates efforts and actions within one project between individuals in the project team, the project team and its internal and external partners.
 * Helps employees in understanding how to be more effective in cooperation with others.
 * Focuses on issues mainly in technical and team communication/interaction areas.
 * Helps employees to identify next steps when it's unclear how to proceed
