@@ -1882,14 +1882,13 @@ https://www.datadoghq.com/product/ - can save all logs.
 # Example Questions
 
 ## Soft-Skills
-Пожалуйста, ознакомься с EPAM Values и code of ethical conduct https://info.epam.com/policy/russia/all-cities.html
 
 1. Как бы разрулил ситуацию: релиз завтра, в релиз должна попасть фича Х, над ней работает разработчик, но кто-то не хочет мержить это. 
 2. Пример, когда надо было делать фичу без четких требований: как 
 3. Пример: когда делал задачку, что пришлось бросить незавершенной 
 •	Конфлюенс для доков и описания сложных вещей 
 4. Самый важный урок который я выучил за последний год 
-5. Let’s assume you have a team and you need to choose between Kanban and Scrum. It is greenfield development project with some devops tasks. How to choose one of them? 
+5. Let’s assume you have a team and you need to choose between Kanban and Scrum. It is greenfield development project with some devops tasks. How to choose one of them? In many disciplines, a greenfield project is one that lacks constraints imposed by prior work. The analogy is to that of construction on greenfield land where there is no need to work within the constraints of existing buildings or infrastructure.
 6. What was the worst problem which you have faced in Python domain? 
 7. What does senior mean according to you? 
 8. Что для тебя лично изменится, когда получишь бейджик сеньера 
@@ -1903,34 +1902,83 @@ https://www.datadoghq.com/product/ - can save all logs.
 16. Let's imagine that you have a conflict with one of your subordinates. What are your actions in this case?
  
 
-## Hard-Skills
+# Hard-Skills
 
-1.	CAP c примерами
-2.	Code quality metrics
-3.	Multiprocessing vs Multithreading vs asyncio, что где применять
-4.	Event loop – how it works. Виды многозадачности  
-5.	SQL vs noSQL databases, где какие применяются
-6.	Mmap
-7.	Какие ООП шаблоны есть при работе с фреймворками
+## CAP
+
+CAP theorem, also known as Brewer’s theorem, stands for Consistency, Availability and Partition Tolerance. But let’s try to understand each, with an example.
+
+### Availability
+Imagine there is a very popular mobile operator in your city and you are its customer because of the amazing plans it offers. Besides that, they also provide an amazing customer care service where you can call anytime and get your queries and concerns answered quickly and efficiently. Whenever a customer calls them, the mobile operator is able to connect them to one of their customer care operators.
+
+The customer is able to elicit any information required by her/him about his accounts like balance, usage, or other information. We call this Availability because every customer is able to connect to the operator and get the information about the user/customer.
+
+Availability means that every request from the user should elicit a response from the system. Whether the user wants to read or write, the user should get a response even if the operation was unsuccessful. This way, every operation is bound to terminate.
+
+For example, when you visit your bank’s ATM, you are able to access your account and its related information. Now even if you go to some other ATM, you should still be able to access your account. If you are only able to access your account from one ATM and not another, this means that the information is not available with all the ATMs.
+
+Availability is of importance when it is required that the client or user be able to access the data at all times, even if it is not consistent. For example, you should be able to see your friend’s Whatsapp status even if you are viewing an outdated one due to some network failure.
+
+### Consistency
+Now, you have recently shifted to a new house in the city and you want to update your address registered with the mobile operator. You decide to call the customer care operator and update it with them. When you call, you connect with an operator. This operator makes the relevant changes in the system. But once you have put down the phone, you realize you told them the correct street name but the old house number (old habits die hard!).
+
+So you frantically call the customer care again. This time when you call, you connect with a different customer care operator but they are able to access your records as well and know that you have recently updated your address. They make the relevant changes in the house number and the rest of the address is the same as the one you told the last operator.
+
+We call this as Consistency because even though you connect to a different customer care operator, they were able to retrieve the same information.
+
+Consistency means that the user should be able to see the same data no matter which node they connect to on the system. This data is the most recent data written to the system. So if a write operation has occurred on a node, it should be replicated to all its replicas. So that whenever a user connects to the system, they can see that same information.
+
+However, having a system that maintains consistency instantaneously and globally is near impossible. Therefore, the goal is to make this transition fast enough so that it is hardly noticeable.
+
+Consistency is of importance when it is required that all the clients or users view the same data. This is important in places that deal with financial or personal information. For example, your bank account should reflect the same balance whether you view it from your PC, tablet, or smartphone!
+
+### Partition tolerance
+Recently you have noticed that your current mobile plan does not suit you. You do not access that much mobile data any longer because you have good wi-fi facilities at home and at the office, and you hardly step outside anywhere. Therefore, you want to update your mobile plan. So you decide to call the customer care once again.
+
+On connecting with the operator this time, they tell you that they have not been able to update their records due to some issues. So the information lying with the operator might not be up to date, therefore they cannot update the information. We can say here that the service is broken or there is no Partition tolerance.
+
+Partition refers to a communication break between nodes within a distributed system. Meaning, if a node cannot receive any messages from another node in the system, there is a partition between the two nodes. Partition could have been because of network failure, server crash, or any other reason.
+
+So, if Partition means a break in communication then Partition tolerance would mean that the system should still be able to work even if there is a partition in the system. Meaning if a node fails to communicate, then one of the replicas of the node should be able to retrieve the data required by the user.
+
+This is handled by keeping replicas of the records in multiple different nodes. So that even if a partition occurs, we are able to retrieve the data from its replica. As you must have guessed already, partition tolerance is a must for any distributed database system.
+
+## The CAP theorem
+
+`The CAP theorem` states that a distributed database system has to make a tradeoff between Consistency and Availability when a Partition occurs.
+
+`CassandraDB` - AP (no consistency)
+
+`MongoDB` - CP (loosing availability)
+
+https://www.analyticsvidhya.com/blog/2020/08/a-beginners-guide-to-cap-theorem-for-data-engineering/
+
+
+2. Code quality metrics
+3. Multiprocessing vs Multithreading vs asyncio, что где применять
+4. Event loop – how it works. Виды многозадачности  
+5. SQL vs noSQL databases, где какие применяются
+6. Mmap
+7. Какие ООП шаблоны есть при работе с фреймворками
 •	ORM - activerecord 
 •	Django middleware – цепочка ответственности
-8.	Тестирование рассказать про все, моки, раннер,  и т.п.
-9.	Test coverage: branch coverage 
-10.	Типы тестов: performance, penetration, functional, smoke, е2е. 
-11.	Semantic versioning
-12.	Уровни зрелости API
+8. Тестирование рассказать про все, моки, раннер,  и т.п.
+9. Test coverage: branch coverage 
+10. Типы тестов: performance, penetration, functional, smoke, е2е. 
+11. Semantic versioning
+12. Уровни зрелости API
 •	Level 1 tackles the question of handling complexity by using divide and conquer, breaking a large service endpoint down into multiple resources 
 •	Level 2 introduces a standard set of verbs so that we handle similar situations in the same way, removing unnecessary variation 
 •	Level 3 introduces discoverability, providing a way of making a protocol more self-documenting 
-13.	Шаблоны по OOP, версионирование API 
-14.	Blue-Green deployment
-15.	What sort algorithms do you know? At least couple with their tradeoffs
-16.	What algorithm is used in Python built-in sort function?
-17.	If you created 5 forks of the same 10 mb memory process, how much memory would it require?
-18.	How does dict work and explain the data structure?
-19.	ideas on cutting memory consumption of python code
-20.	How can you profile your application? What techniques do you know? What tools do you use for it?
-21.	Difference between docker and VMs
+13. Шаблоны по OOP, версионирование API 
+14. Blue-Green deployment
+15. What sort algorithms do you know? At least couple with their tradeoffs
+16. What algorithm is used in Python built-in sort function?
+17. If you created 5 forks of the same 10 mb memory process, how much memory would it require?
+18. How does dict work and explain the data structure?
+19. ideas on cutting memory consumption of python code
+20. How can you profile your application? What techniques do you know? What tools do you use for it?
+21. Difference between docker and VMs
 
   
 ## Common Questions
