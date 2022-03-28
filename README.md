@@ -1953,9 +1953,71 @@ This is handled by keeping replicas of the records in multiple different nodes. 
 
 https://www.analyticsvidhya.com/blog/2020/08/a-beginners-guide-to-cap-theorem-for-data-engineering/
 
+## Code quality metrics
 
-2. Code quality metrics
-3. Multiprocessing vs Multithreading vs asyncio, что где применять
+### Qualitative Code Quality Metrics
+Qualitative metrics are subjective measurements that aim to better define what good means.
+
+`Extensibility`
+Extensibility is the degree to which software is coded to incorporate future growth. The central theme of extensible applications is that developers should be able to add new features to code or change existing functionality without it affecting the entire system.
+
+`Maintainability`
+Code maintainability is a qualitative measurement of how easy it is to make changes, and the risks associated with such changes.
+
+Developers can make judgments about maintainability when they make changes — if the change should take an hour but it ends up taking three days, the code probably isn’t that maintainable.
+
+Another way to gauge maintainability is to check the number of lines of code in a given software feature or in an entire application. Software with more lines can be harder to maintain.
+
+`Readability and Code Formatting`
+Readable code should use indentation and be formatted according to standards particular to the language it’s written in; this makes the application structure consistent and visible.
+
+`Testing`: The Next Bottleneck in Continuous Delivery | Download >>
+
+`Comments should be used where required`, with concise explanations given for each method. Names for methods should be meaningful in the sense that the names indicate what the method does.
+
+`Clarity`
+Clarity is an indicator of quality that says good code should be unambiguous. If you look at a piece of code and wonder what on earth it does, then that code is ambiguous.
+
+This, along with readability and documentation,  means any other developer can easily use code written by someone else, without taking a long time to understand how it works.
+
+`Well-documented`
+If the program is not documented, it will be difficult for other developers to use it, or even for the same developer to understand the code years from now. One common definition of quality is that it may be “used long term, can be carried across to future releases and products” (without being considered “legacy code”). Documentation is essential to make this happen.
+
+Documentation also provides a way to improve by formalizing the decisions you make when writing. When you document code and do it well, you need to think differently about each component and why it exists in the software. Writing out the reasons for certain programming decisions can improve application design.
+
+`Well-tested`
+Well tested programs are likely to be of higher quality, because much more attention is paid to the inner workings of the code and its impact on users. Testing means that the application is constantly under scrutiny.
+
+`Efficiency`
+Efficient code only uses the computing resources it needs to. Another efficiency measurement is that it runs in as little time as possible.
+
+Many developers believe that inefficient code is not of good quality (even if it satisfies some of the criteria above). Some negative impacts of not building for efficiency is long build times, difficulty to detect and fix bugs, and performance issues for the user.
+
+### Quantitative Code Quality Metrics
+There are a few quantitative measurements to reveal well written applications:
+
+`Weighted Micro Function Points`
+This metric is a modern software sizing algorithm that parses source code and breaks it down into micro functions. The algorithm then produces several complexity metrics from these micro functions, before interpolating the results into a single score.
+
+WMFP automatically measures the complexity of existing source code. The metrics used to determine the WMFP value include comments, code structure, arithmetic calculations, and flow control path.
+
+`Halstead Complexity Measures`
+The Halstead complexity measures were introduced in 1977. These measures include program vocabulary, program length, volume, difficulty, effort, and the estimated number of bugs in a module. The aim of the measurement is to assess the computational complexity of a program. The more complex any code is, the harder it is to maintain and the lower its quality.
+
+`Cyclomatic Complexity`
+Cyclomatic complexity is a metric that measures the structural complexity of a program. It does so by counting the number of linearly independent paths through a program’s source code. Methods with high cyclomatic complexity (greater than 10) are more likely to contain defects.
+
+With cyclomatic complexity, developers get an indicator of how difficult it will be to test, maintain, and troubleshoot their programming. This metric can be combined with a size metric such as lines of code, to predict how easy the application will be to modify and maintain.
+
+
+## Multiprocessing vs Multithreading vs asyncio
+
+CPU Bound => Multi Processing
+
+I/O Bound, Fast I/O, Limited Number of Connections => Multi Threading
+
+I/O Bound, Slow I/O, Many connections => Asyncio
+
 4. Event loop – how it works. Виды многозадачности  
 5. SQL vs noSQL databases, где какие применяются
 6. Mmap
