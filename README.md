@@ -2058,8 +2058,31 @@ Database Table - Plural with underscores separating words (e.g., book_clubs).
 - Foreign keys - These fields should be named following the pattern singularized_table_name_id (e.g., item_id, order_id). These are the fields that Active Record will look for when you create associations between your models.
 - Primary keys - By default, Active Record will use an integer column named id as the table's primary key (bigint for PostgreSQL and MySQL, integer for SQLite). When using Active Record Migrations to create your tables, this column will be automatically created.
 
+## Django middleware
 
-•	Django middleware – цепочка ответственности
+Middleware is a framework of hooks into Django’s request/response processing. It’s a light, low-level “plugin” system for globally altering Django’s input or output.
+
+Each middleware component is responsible for doing some specific function. For example, Django includes a middleware component, AuthenticationMiddleware, that associates users with requests using sessions.
+
+```python
+def simple_middleware(get_response):
+    # One-time configuration and initialization.
+
+    def middleware(request):
+        # Code to be executed for each request before
+        # the view (and later middleware) are called.
+
+        response = get_response(request)
+
+        # Code to be executed for each request/response after
+        # the view is called.
+
+        return response
+
+    return middleware
+```
+
+
 8. Тестирование рассказать про все, моки, раннер,  и т.п.
 9. Test coverage: branch coverage 
 10. Типы тестов: performance, penetration, functional, smoke, е2е. 
