@@ -2019,10 +2019,46 @@ I/O Bound, Fast I/O, Limited Number of Connections => Multi Threading
 I/O Bound, Slow I/O, Many connections => Asyncio
 
 4. Event loop – how it works. Виды многозадачности  
-5. SQL vs noSQL databases, где какие применяются
-6. Mmap
-7. Какие ООП шаблоны есть при работе с фреймворками
-•	ORM - activerecord 
+5. SQL vs noSQL databases
+## Mmap
+
+In computing, mmap(2) is a POSIX-compliant Unix system call that maps files or devices into memory. It is a method of memory-mapped file I/O. It implements demand paging because file contents are not read from disk directly and initially do not use physical RAM at all. The actual reads from disk are performed in a "lazy" manner, after a specific location is accessed. After the memory is no longer needed, it is important to munmap(2) the pointers to it. Protection information can be managed using mprotect(2), and special treatment can be enforced using madvise(2).
+
+In Linux, macOS and the BSDs, mmap can create several types of mappings. Other operating systems may only support a subset of these; for example, shared mappings may not be practical in an operating system without a global VFS or I/O cache.
+
+## ORM - activerecord 
+
+1 What is Active Record?
+Active Record is the M in MVC - the model - which is the layer of the system responsible for representing business data and logic. Active Record facilitates the creation and use of business objects whose data requires persistent storage to a database. It is an implementation of the Active Record pattern which itself is a description of an Object Relational Mapping system.
+
+1.1 The Active Record Pattern
+Active Record was described by Martin Fowler in his book Patterns of Enterprise Application Architecture. In Active Record, objects carry both persistent data and behavior which operates on that data. Active Record takes the opinion that ensuring data access logic as part of the object will educate users of that object on how to write to and read from the database.
+
+1.2 Object Relational Mapping
+Object Relational Mapping, commonly referred to as its abbreviation ORM, is a technique that connects the rich objects of an application to tables in a relational database management system. Using ORM, the properties and relationships of the objects in an application can be easily stored and retrieved from a database without writing SQL statements directly and with less overall database access code.
+
+1.3 Active Record as an ORM Framework
+Active Record gives us several mechanisms, the most important being the ability to:
+
+- Represent models and their data.
+- Represent associations between these models.
+- Represent inheritance hierarchies through related models.
+- Validate models before they get persisted to the database.
+- Perform database operations in an object-oriented fashion.
+
+2 Convention over Configuration in Active Record
+
+2.1 Naming Conventions
+
+Model Class - Singular with the first letter of each word capitalized (e.g., BookClub).
+Database Table - Plural with underscores separating words (e.g., book_clubs).
+
+2.2 Schema Conventions
+
+- Foreign keys - These fields should be named following the pattern singularized_table_name_id (e.g., item_id, order_id). These are the fields that Active Record will look for when you create associations between your models.
+- Primary keys - By default, Active Record will use an integer column named id as the table's primary key (bigint for PostgreSQL and MySQL, integer for SQLite). When using Active Record Migrations to create your tables, this column will be automatically created.
+
+
 •	Django middleware – цепочка ответственности
 8. Тестирование рассказать про все, моки, раннер,  и т.п.
 9. Test coverage: branch coverage 
