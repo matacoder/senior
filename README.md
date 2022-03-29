@@ -2106,21 +2106,67 @@ Branch coverage is a metric that indicates whether all branches in a codebase ar
 
 Branch coverage is an important metric in that it can help a team or organization assess whether an application has been tested to completion. A low branch coverage shows that there are scenarios in the application lacking testing. Such scenarios might contain defects that will only manifest in edge cases when the application makes it to production.
 
-10. Типы тестов: performance, penetration, functional, smoke, е2е. 
-11. Semantic versioning
-12. Уровни зрелости API
-•	Level 1 tackles the question of handling complexity by using divide and conquer, breaking a large service endpoint down into multiple resources 
-•	Level 2 introduces a standard set of verbs so that we handle similar situations in the same way, removing unnecessary variation 
-•	Level 3 introduces discoverability, providing a way of making a protocol more self-documenting 
-13. Шаблоны по OOP, версионирование API 
-14. Blue-Green deployment
-15. What sort algorithms do you know? At least couple with their tradeoffs
-16. What algorithm is used in Python built-in sort function?
-17. If you created 5 forks of the same 10 mb memory process, how much memory would it require?
-18. How does dict work and explain the data structure?
-19. ideas on cutting memory consumption of python code
-20. How can you profile your application? What techniques do you know? What tools do you use for it?
-21. Difference between docker and VMs
+## Test types: performance, penetration, functional, smoke, е2е. 
+
+`performance` - https://locust.io/ Define user behaviour with Python code, and swarm your system with millions of simultaneous users.
+
+`Penetration testing` (Pen testing) is an attempt to evaluate the security of an IT infrastructure by simulating a cyber-attack against computer system to exploit vulnerabilities. It helps an organization strengthen its defenses against cyber-attacks by identifying vulnerabilities.
+
+`functional` - A functional test is a form of integration test in which the application is run "literally". You would have to make sure that an email was actually sent in a functional test, because it tests your code end to end.
+
+`Sanity` testing is a kind of Software Testing performed after receiving a software build, with minor changes in code, or functionality, to ascertain that the bugs have been fixed and no further issues are introduced due to these changes. The goal is to determine that the proposed functionality works roughly as expected. If sanity test fails, the build is rejected to save the time and costs involved in a more rigorous testing.
+
+`Smoke Testing` is a software testing process that determines whether the deployed software build is stable or not. Smoke testing is a confirmation for QA team to proceed with further software testing. It consists of a minimal set of tests run on each build to test software functionalities. Smoke testing is also known as “Build Verification Testing” or “Confidence Testing.”
+
+`End-to-end` testing frameworks are a powerful way to ensure that all moving parts within an application are configured correctly, and that the application's is functionally working correctly. `selenium` for python
+
+## Semantic versioning
+
+Given a version number MAJOR.MINOR.PATCH, increment the:
+
+- MAJOR version when you make incompatible API changes,
+- MINOR version when you add functionality in a backwards compatible manner, and
+- PATCH version when you make backwards compatible bug fixes.
+
+Additional labels for pre-release and build metadata are available as extensions to the MAJOR.MINOR.PATCH format.
+
+## API Richardson Maturity Model
+- Level 1 tackles the question of handling complexity by using divide and conquer, breaking a large service endpoint down into multiple `resources`
+- Level 2 introduces a `standard set of verbs` so that we handle similar situations in the same way, removing unnecessary variation 
+- Level 3 introduces discoverability, providing a way of `making a protocol more self-documenting` 
+
+## Api version
+
+- URI Path `http://www.example.com/api/v1/products`
+- Query Params `http://www.example.com/api/products?version=1`
+- Header `Accept: version=1.0`
+
+## Blue-Green deployment
+
+Blue green deployment is an application release model that gradually transfers user traffic from a previous version of an app or microservice to a nearly identical new release—both of which are running in production. 
+
+The old version can be called the blue environment while the new version can be known as the green environment. Once production traffic is fully transferred from blue to green, blue can standby in case of rollback or pulled from production and updated to become the template upon which the next update is made.
+
+There are downsides to this continuous deployment model. Not all environments have the same uptime requirements or the resources to properly perform CI/CD processes like blue green. But many apps evolve to support such continuous delivery as the enterprises supporting them digitally transform.
+
+## What sort algorithms do you know? At least couple with their tradeoffs
+
+- Quicksort n\log n (worst n2), memory logN => Not stable
+- Merge sort n\log n (memory N) => Stable
+- Bubble sort N2
+- Heapsort nlogn and memory 1 => not stable
+
+## What algorithm is used in Python built-in sort function?
+
+Python uses an algorithm called `Timsort`:
+
+Timsort is a hybrid sorting algorithm, derived from merge sort and insertion sort, designed to perform well on many kinds of real-world data. It was invented by Tim Peters in 2002 for use in the Python programming language. The algorithm finds subsets of the data that are already ordered, and uses the subsets to sort the data more efficiently. This is done by merging an identified subset, called a run, with existing runs until certain criteria are fulfilled. Timsort has been Python's standard sorting algorithm since version 2.3. It is now also used to sort arrays in Java SE 7, and on the Android platform.
+
+19. If you created 5 forks of the same 10 mb memory process, how much memory would it require?
+20. How does dict work and explain the data structure?
+21. ideas on cutting memory consumption of python code
+22. How can you profile your application? What techniques do you know? What tools do you use for it?
+23. Difference between docker and VMs
 
   
 ## Common Questions
