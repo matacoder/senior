@@ -2230,14 +2230,46 @@ To file a client record, filing clerks would use the unique client number writte
 
 To retrieve a client record, filing clerks would be given a client number on a slip of paper. Using this unique client number (the hash key), they would modulate it by 300 in order to determine which filing cabinet had the clients folder. When they opened the filing cabinet they would discover that it contained many folders ordered by client number. Searching through the records they would quickly find the client folder and retrieve it.
 
-In our real-world example, our buckets are filing cabinets and our records are file folders.
+In our real-world example, our buckets are filing cabinets and our records are file folders. 
 
-21. ideas on cutting memory consumption of python code
-22. How can you profile your application? What techniques do you know? What tools do you use for it?
-23. Difference between docker and VMs
+## Ideas on cutting memory consumption of python code
 
+Use dicts, sets, generators 
+
+## Difference between docker and VMs
+
+Docker originally used LinuX Containers (LXC), but later switched to runC (formerly known as libcontainer), which runs in the same operating system as its host. This allows it to share a lot of the host operating system resources. Also, it uses a layered filesystem (AuFS) and manages networking.
+
+AuFS is a layered file system, so you can have a read only part and a write part which are merged together. One could have the common parts of the operating system as read only (and shared amongst all of your containers) and then give each container its own mount for writing.
+
+So, let's say you have a 1 GB container image; if you wanted to use a full VM, you would need to have 1 GB x number of VMs you want. With Docker and AuFS you can share the bulk of the 1 GB between all the containers and if you have 1000 containers you still might only have a little over 1 GB of space for the containers OS (assuming they are all running the same OS image).
+
+A full virtualized system gets its own set of resources allocated to it, and does minimal sharing. You get more isolation, but it is much heavier (requires more resources). With Docker you get less isolation, but the containers are lightweight (require fewer resources). So you could easily run thousands of containers on a host, and it won't even blink. Try doing that with Xen, and unless you have a really big host, I don't think it is possible.
+
+A full virtualized system usually takes minutes to start, whereas Docker/LXC/runC containers take seconds, and often even less than a second.
+
+There are pros and cons for each type of virtualized system. If you want full isolation with guaranteed resources, a full VM is the way to go. If you just want to isolate processes from each other and want to run a ton of them on a reasonably sized host, then Docker/LXC/runC seems to be the way to go.
+
+## Extreme programming
+
+Extreme Programming (XP) is an agile software development framework that aims to produce higher quality software, and higher quality of life for the development team. XP is the most specific of the agile frameworks regarding appropriate engineering practices for software development.
+
+The five values of XP are communication, simplicity, feedback, courage, and respectю
+
+- The Planning Game
+- Small Releases
+- Metaphor
+- Simple Design
+- Testing
+- Refactoring
+- Pair Programming
+- Collective Ownership
+- Continuous Integration
+- 40-hour week
+- On-site Customer
+- Coding Standard
   
-## Common Questions
+# Common Questions
 - Do you know EPAM values? How do you understand these values?
 - Could you please tell us about a recent challenge you had on your project? What was the context? How did you resolve it? 
 - You need to select between different technologies. How would you select between them? 
