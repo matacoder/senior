@@ -2162,8 +2162,58 @@ Python uses an algorithm called `Timsort`:
 
 Timsort is a hybrid sorting algorithm, derived from merge sort and insertion sort, designed to perform well on many kinds of real-world data. It was invented by Tim Peters in 2002 for use in the Python programming language. The algorithm finds subsets of the data that are already ordered, and uses the subsets to sort the data more efficiently. This is done by merging an identified subset, called a run, with existing runs until certain criteria are fulfilled. Timsort has been Python's standard sorting algorithm since version 2.3. It is now also used to sort arrays in Java SE 7, and on the Android platform.
 
-19. If you created 5 forks of the same 10 mb memory process, how much memory would it require?
-20. How does dict work and explain the data structure?
+## If you created 5 forks of the same 10 mb memory process, how much memory would it require?
+
+A bit more than 10:
+
+The child process has an exact copy of all the memory segments of the parent process. In modern UNIX variants that follow the virtual memory model from SunOS-4.0, copy-on-write semantics are implemented and the physical memory need not be actually copied. Instead, virtual memory pages in both processes may refer to the same pages of physical memory until one of them writes to such a page: then it is copied. This optimization is important in the common case where fork is used in conjunction with exec to execute a new program: typically, the child process performs only a small set of actions before it ceases execution of its program in favour of the program to be started, and it requires very few, if any, of its parent's data structures.
+
+## How does dict work and explain the data structure?
+
+Python dictionaries are implemented as hash tables.
+
+Hash tables must allow for hash collisions i.e. even if two distinct keys have the same hash value, the table's implementation must have a strategy to insert and retrieve the key and value pairs unambiguously.
+
+Python dict uses open addressing to resolve hash collisions (explained below) (see dictobject.c:296-297).
+
+Python hash table is just a contiguous block of memory (sort of like an array, so you can do an O(1) lookup by index).
+
+Each slot in the table can store one and only one entry. This is important.
+
+Each entry in the table is actually a combination of the three values: < hash, key, value >. This is implemented as a C struct (see dictobject.h:51-56).
+
+The figure below is a logical representation of a Python hash table. In the figure below, 0, 1, ..., i, ... on the left are indices of the slots in the hash table (they are just for illustrative purposes and are not stored along with the table obviously!).
+
+Logical model of Python Hash table
+  -+-----------------+
+  0| <hash|key|value>|
+  -+-----------------+
+  1|      ...        |
+  -+-----------------+
+  .|      ...        |
+  -+-----------------+
+  i|      ...        |
+  -+-----------------+
+  .|      ...        |
+  -+-----------------+
+  n|      ...        |
+  -+-----------------+
+When a new dict is initialized it starts with 8 slots. (see dictobject.h:49)
+
+When adding entries to the table, we start with some slot, i, that is based on the hash of the key. CPython initially uses i = hash(key) & mask (where mask = PyDictMINSIZE - 1, but that's not really important). Just note that the initial slot, i, that is checked depends on the hash of the key.
+
+If that slot is empty, the entry is added to the slot (by entry, I mean, <hash|key|value>). But what if that slot is occupied!? Most likely because another entry has the same hash (hash collision!)
+
+If the slot is occupied, CPython (and even PyPy) compares the hash AND the key (by compare I mean == comparison not the is comparison) of the entry in the slot against the hash and key of the current entry to be inserted (dictobject.c:337,344-345) respectively. If both match, then it thinks the entry already exists, gives up and moves on to the next entry to be inserted. If either hash or the key don't match, it starts probing.
+
+Probing just means it searches the slots by slot to find an empty slot. Technically we could just go one by one, i+1, i+2, ... and use the first available one (that's linear probing). But for reasons explained beautifully in the comments (see dictobject.c:33-126), CPython uses random probing. In random probing, the next slot is picked in a pseudo random order. The entry is added to the first empty slot. For this discussion, the actual algorithm used to pick the next slot is not really important (see dictobject.c:33-126 for the algorithm for probing). What is important is that the slots are probed until first empty slot is found.
+
+The same thing happens for lookups, just starts with the initial slot i (where i depends on the hash of the key). If the hash and the key both don't match the entry in the slot, it starts probing, until it finds a slot with a match. If all slots are exhausted, it reports a fail.
+
+BTW, the dict will be resized if it is two-thirds full. This avoids slowing down lookups. (see dictobject.h:64-65)
+
+https://stackoverflow.com/questions/327311/how-are-pythons-built-in-dictionaries-implemented
+
 21. ideas on cutting memory consumption of python code
 22. How can you profile your application? What techniques do you know? What tools do you use for it?
 23. Difference between docker and VMs
