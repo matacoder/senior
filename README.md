@@ -2214,6 +2214,24 @@ BTW, the dict will be resized if it is two-thirds full. This avoids slowing down
 
 https://stackoverflow.com/questions/327311/how-are-pythons-built-in-dictionaries-implemented
 
+## Hash tables
+
+Hash tables are used to quickly store and retrieve data (or records).
+Records are stored in buckets using hash keys
+Hash keys are calculated by applying a hashing algorithm to a chosen value (the key value) contained within the record. This chosen value must be a common value to all the records.
+Each bucket can have multiple records which are organized in a particular order.
+Real World Example:
+
+Hash & Co., founded in 1803 and lacking any computer technology had a total of 300 filing cabinets to keep the detailed information (the records) for their approximately 30,000 clients. Each file folder were clearly identified with its client number, a unique number from 0 to 29,999.
+
+The filing clerks of that time had to quickly fetch and store client records for the working staff. The staff had decided that it would be more efficient to use a hashing methodology to store and retrieve their records.
+
+To file a client record, filing clerks would use the unique client number written on the folder. Using this client number, they would modulate the hash key by 300 in order to identify the filing cabinet it is contained in. When they opened the filing cabinet they would discover that it contained many folders ordered by client number. After identifying the correct location, they would simply slip it in.
+
+To retrieve a client record, filing clerks would be given a client number on a slip of paper. Using this unique client number (the hash key), they would modulate it by 300 in order to determine which filing cabinet had the clients folder. When they opened the filing cabinet they would discover that it contained many folders ordered by client number. Searching through the records they would quickly find the client folder and retrieve it.
+
+In our real-world example, our buckets are filing cabinets and our records are file folders.
+
 21. ideas on cutting memory consumption of python code
 22. How can you profile your application? What techniques do you know? What tools do you use for it?
 23. Difference between docker and VMs
