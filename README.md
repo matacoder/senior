@@ -2082,9 +2082,30 @@ def simple_middleware(get_response):
     return middleware
 ```
 
+## Testing, mocks, runner
 
-8. Тестирование рассказать про все, моки, раннер,  и т.п.
-9. Test coverage: branch coverage 
+- Manual Testing
+- Unit Tests (A unit test is a smaller test, one that checks that a single component operates in the right way. A unit test helps you to isolate what is broken in your application and fix it faster.)
+- Integration Tests (Testing multiple components is known as integration testing.)
+
+  - Calling an HTTP REST API
+  - Calling a Python API
+  - Calling a web service
+  - Running a command line
+
+Runners:
+
+- `unittest`;
+- `nose` или nose2; (You may find that over time, as you write hundreds or even thousands of tests for your application, it becomes increasingly hard to understand and use the output from unittest. `nose` is compatible with any tests written using the unittest framework and can be used as a drop-in replacement for the unittest test runner. The development of nose as an open-source application fell behind, and a fork called nose2 was created. If you’re starting from scratch, it is recommended that you use nose2 instead of nose.)
+- `pytest`
+
+
+## Test coverage: branch coverage
+
+Branch coverage is a metric that indicates whether all branches in a codebase are exercised by tests. A “branch” is one of the possible execution paths the code can take after a decision statement—e.g., an if statement—gets evaluated.
+
+Branch coverage is an important metric in that it can help a team or organization assess whether an application has been tested to completion. A low branch coverage shows that there are scenarios in the application lacking testing. Such scenarios might contain defects that will only manifest in edge cases when the application makes it to production.
+
 10. Типы тестов: performance, penetration, functional, smoke, е2е. 
 11. Semantic versioning
 12. Уровни зрелости API
