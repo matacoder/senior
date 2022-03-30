@@ -47,6 +47,8 @@
 - [Modules in Python](#modules-in-python)
   * [Module `reload`, `importlib`](#module-reload-importlib)
 - [OOP in Python](#oop-in-python)
+  * [SOLID](#solid)
+  * [The four basics of object-oriented programming](#the-four-basics-of-object-oriented-programming)
   * [abstract base class](#abstract-base-class)
   * [getattr(), setattr()](#getattr-setattr)
   * [`__getattr__`, `__setattr__`, `__delattr__`](#__getattr__-__setattr__-__delattr__)
@@ -190,7 +192,7 @@
   * [Estimations](#estimations)
   * [Software Developing Methodologies](#software-developing-methodologies)
   * [Scrum](#scrum)
-  * [Code Review](#code-review)%
+  * [Code Review](#code-review)
 
 ## Ways to execute Python code: exec, eval, ast, code, codeop, etc.
 
@@ -693,6 +695,31 @@ while True:
 ```
 
 # OOP in Python	
+
+## SOLID
+In software engineering, SOLID is a mnemonic acronym for five design principles intended to make software designs more understandable, flexible, and maintainable. The principles are a subset of many principles promoted by American software engineer and instructor Robert C. Martin, first introduced in his 2000 paper Design Principles and Design Patterns.
+
+The SOLID ideas are
+
+- The single-responsibility principle: "There should never be more than one reason for a class to change." In other words, every class should have only one responsibility.
+- The open–closed principle: "Software entities ... should be open for extension, but closed for modification."
+- The Liskov substitution principle: "Functions that use pointers or references to base classes must be able to use objects of derived classes without knowing it." See also design by contract.
+- The interface segregation principle: "Many client-specific interfaces are better than one general-purpose interface."
+- The dependency inversion principle: "Depend upon abstractions, not concretions."
+
+The SOLID acronym was introduced later, around 2004, by Michael Feathers.
+
+## The four basics of object-oriented programming
+
+- Encapsulation - binding the data and functions which operate on that data into a single unit, the class
+
+- Abstraction - treating a system as a “black box,” where it’s not important to understand the gory inner workings in order to reap the benefits of using it.
+
+- Inheritance - if a class inherits from another class, it automatically obtains a lot of the same functionality and properties from that class and can be extended to contain separate code and data. A nice feature of inheritance is that it often leads to good code reuse since a parent class’ functions don’t need to be re-defined in any of its child classes.
+
+- Polymorphism - Because derived objects share the same interface as their parents, the calling code can call any function in that class’ interface. At run-time, the appropriate function will be called depending on the type of object passed leading to possibly different behaviors.
+
+
 ## abstract base class
 
 They make sure that derived classes implement methods and properties dictated in the abstract base class.
