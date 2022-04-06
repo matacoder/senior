@@ -3,6 +3,11 @@
 <img src="https://user-images.githubusercontent.com/67960818/159924991-ad7ac6de-facf-4cb0-a8c9-31a7407fb9e4.png" alt="python-logo-master-v3-TM-flattened" style="max-width: 100%;">
 
 - [Python Questions for Senior and Lead roles](#python-questions-for-senior-and-lead-roles)
+  * [Mutable and Immutable Objects](#mutable-and-immutable-objects)
+    + [Mutable objects (call by reference)](#mutable-objects-call-by-reference)
+    + [Immutable objects (pass by value)](#immutable-objects-pass-by-value)
+    + [Features](#features)
+    + [How objects are passed to Functions](#how-objects-are-passed-to-functions)
   * [Ways to execute Python code: exec, eval, ast, code, codeop, etc.](#ways-to-execute-python-code-exec-eval-ast-code-codeop-etc)
   * [Advanced differences between 2.x and 3.x in general](#advanced-differences--between-2x-and-3x-in-general)
     + [Division operator](#division-operator)
@@ -221,6 +226,35 @@
   * [Software Developing Methodologies](#software-developing-methodologies)
   * [Scrum](#scrum)
   * [Code Review](#code-review)
+
+## Mutable and Immutable Objects
+
+### Mutable objects (call by reference):
+
+list, dict, set, byte array
+
+### Immutable objects (pass by value):
+- int, float, complex, string, 
+
+- tuple (the “value” of an immutable object can’t change, but it’s constituent objects can.), 
+
+- frozen set [note: immutable version of set], 
+- bytes
+
+### Features:
+
+- Python handles mutable and immutable objects differently.
+- Immutable are quicker to access than mutable objects.
+- Mutable objects are great to use when you need to change the size of the object, example list, dict etc.. Immutables are used when you need to ensure that the object you made will always stay the same.
+- Immutable objects are fundamentally expensive to “change”, because doing so involves creating a copy. Changing mutable objects is cheap.
+
+### How objects are passed to Functions
+
+Its important for us to know difference between mutable and immutable types and how they are treated when passed onto functions. Memory efficiency is highly affected when the proper objects are used.
+
+For example if a mutable object is called by reference in a function, it can change the original variable itself. 
+
+Hence to avoid this, the original variable needs to be copied to another variable. Immutable objects can be called by reference because its value cannot be changed anyways.
 
 ## Ways to execute Python code: exec, eval, ast, code, codeop, etc.
 
