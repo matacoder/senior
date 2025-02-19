@@ -1480,6 +1480,10 @@ Past efforts to create a “free-threaded” interpreter (one which locks shared
 >>> # The interval is set to 100 instructions:
 >>> sys.getcheckinterval()
 100
+
+# new python^
+>>> sys.getswitchinterval()
+0.005
 ```
 
 The problem in this mechanism was that most of the time the CPU-bound thread would reacquire the GIL itself before other threads could acquire it. This was researched by David Beazley and visualizations can be found here.
