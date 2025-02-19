@@ -1526,23 +1526,24 @@ Better:
 ```python
 from concurrent.futures import ThreadPoolExecutor
 from time import sleep
- 
-values = [3,4,5,6]
- 
+
 def cube(x):
-    print(f'Cube of {x}:{x*x*x}')
- 
- 
+    result = x * x * x
+    print(f'Куб числа {x}: {result}')
+    return result
+
 if __name__ == '__main__':
-    result =[]
-    with ThreadPoolExecutor(max_workers=5) as exe:
-        exe.submit(cube,2)
-         
-        # Maps the method 'cube' with a list of values.
-        result = exe.map(cube,values)
-     
-    for r in result:
-      print(r)
+    values = [3, 4, 5, 6]
+    
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        # Используем map для применения функции cube ко всем значениям
+        results = list(executor.map(cube, values))
+    
+    print("\nРезультаты:")
+    for value, result in zip(values, results):
+        print(f"Куб числа {value}: {result}")
+
+
 ```
 
 Operations associated with `queue.Queue` are: 
