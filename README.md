@@ -2,35 +2,44 @@
 
 <img src="https://user-images.githubusercontent.com/67960818/159924991-ad7ac6de-facf-4cb0-a8c9-31a7407fb9e4.png" alt="python-logo-master-v3-TM-flattened" style="max-width: 100%;">
 
-- [Python Questions for Senior and Lead roles](#python-questions-for-senior-and-lead-roles)
-  * [Mutable and Immutable Objects](#mutable-and-immutable-objects)
-    + [Mutable objects (call by reference)](#mutable-objects-call-by-reference)
-    + [Immutable objects (pass by value)](#immutable-objects-pass-by-value)
-    + [Features](#features)
-    + [How objects are passed to Functions](#how-objects-are-passed-to-functions)
-  * [Ways to execute Python code: exec, eval, ast, code, codeop, etc.](#ways-to-execute-python-code-exec-eval-ast-code-codeop-etc)
-  * [Advanced differences between 2.x and 3.x in general](#advanced-differences--between-2x-and-3x-in-general)
-    + [Division operator](#division-operator)
-    + [`print` function](#print-function)
-    + [Unicode](#unicode)
-    + [`xrange`](#xrange)
-    + [Error Handling](#error-handling)
-    + [`_future_` module](#_future_-module)
-    + [Six](#six)
-  * [`deepcopy`, method `copy`, slicing, etc.](#deepcopy-method-copy-slicing-etc)
-  * [OrderedDict, DefaultDict](#ordereddict-defaultdict)
-  * [`hashable()`](#hashable)
-  * [Strong and weak typing](#strong-and-weak-typing)
-  * [Frozenset](#frozenset)
-  * [Weak references](#weak-references)
-  * [Raw strings](#raw-strings)
-  * [Unicode and ASCII strings](#unicode-and-ascii-strings)
+This repository contains questions and answers for Senior and Lead Python developers. The material is divided into several parts:
+
+- [Python Technical Questions](#python-questions-for-senior-and-lead-roles)
+- [PostgreSQL Questions](#postgresql-questions)
+- [Common Questions for Senior and Lead Developers](common_questions.md)
+
+- [Mutable and Immutable Objects](#mutable-and-immutable-objects)
+  * [Mutable objects (call by reference)](#mutable-objects-call-by-reference)
+  * [Immutable objects (pass by value)](#immutable-objects-pass-by-value)
+  * [Features](#features)
+  * [How objects are passed to Functions](#how-objects-are-passed-to-functions)
+- [Ways to execute Python code: exec, eval, ast, code, codeop, etc.](#ways-to-execute-python-code-exec-eval-ast-code-codeop-etc)
+- [Advanced differences between 2.x and 3.x in general](#advanced-differences--between-2x-and-3x-in-general)
+  + [Division operator](#division-operator)
+  + [`print` function](#print-function)
+  + [Unicode](#unicode)
+  + [`xrange`](#xrange)
+  + [Error Handling](#error-handling)
+  + [`_future_` module](#_future_-module)
+  + [Six](#six)
+- [`deepcopy`, method `copy`, slicing, etc.](#deepcopy-method-copy-slicing-etc)
+- [OrderedDict, DefaultDict](#ordereddict-defaultdict)
+- [`hashable()`](#hashable)
+- [Strong and weak typing](#strong-and-weak-typing)
+- [Frozenset](#frozenset)
+- [Weak references](#weak-references)
+- [Raw strings](#raw-strings)
+- [Unicode and ASCII strings](#unicode-and-ascii-strings)
 - [Python Statements and Syntax](#python-statements-and-syntax)
   * [Iteration protocol.](#iteration-protocol)
   * [Generators](#generators)
   * [yield](#yield)
   * [method send(), throw(), next(), close()](#method-send-throw-next-close)
   * [Coroutines](#coroutines)
+  * [Pattern Matching (Python 3.10+)](#pattern-matching-python-310)
+  * [Exception Groups (Python 3.11+)](#exception-groups-python-311)
+  * [Type Parameter Syntax (Python 3.12+)](#type-parameter-syntax-python-312)
+  * [Per-Interpreter GIL (Python 3.12+)](#per-interpreter-gil-python-312)
 - [Functions in Python](#functions-in-python)
   * [When and how many times are default arguments evaluated?](#when-and-how-many-times-are-default-arguments-evaluated)
   * [`partial`](#partial)
@@ -184,7 +193,7 @@
   * [Django middleware](#django-middleware)
   * [Testing, mocks, runner](#testing-mocks-runner)
   * [Test coverage: branch coverage](#test-coverage-branch-coverage)
-  * [Test types: performance, penetration, functional, smoke, е2е.](#test-types-performance-penetration-functional-smoke-%D0%B52%D0%B5)
+  * [Test types: performance, penetration, functional, smoke, e2e](#test-types-performance-penetration-functional-smoke-e2e)
   * [Semantic versioning](#semantic-versioning)
   * [API Richardson Maturity Model](#api-richardson-maturity-model)
   * [Api version](#api-version)
@@ -198,6 +207,82 @@
   * [Difference between docker and VMs](#difference-between-docker-and-vms)
   * [Extreme programming](#extreme-programming)
 - [PostgreSQL Questions](#postgresql-questions)
+  * [Database Architecture and Concepts](#database-architecture-and-concepts)
+    + [What is PostgreSQL?](#what-is-postgresql)
+    + [What are the key features of PostgreSQL?](#what-are-the-key-features-of-postgresql)
+  * [Indexing and Performance](#indexing-and-performance)
+    + [What is a non-clustered index?](#what-is-a-non-clustered-index)
+    + [What are the different types of indexes in PostgreSQL?](#what-are-the-different-types-of-indexes-in-postgresql)
+    + [How do indexes affect performance?](#how-do-indexes-affect-performance)
+  * [Data Types and Storage](#data-types-and-storage)
+    + [Can you store binary data in PostgreSQL?](#can-you-store-binary-data-in-postgresql)
+    + [What are the advantages of JSONB over JSON?](#what-are-the-advantages-of-jsonb-over-json)
+    + [How does PostgreSQL handle arrays?](#how-does-postgresql-handle-arrays)
+  * [Functions and Procedures](#functions-and-procedures)
+    + [Explain functions in PostgreSQL](#explain-functions-in-postgresql)
+    + [What are the different types of functions?](#what-are-the-different-types-of-functions)
+    + [What is the difference between functions and procedures?](#what-is-the-difference-between-functions-and-procedures)
+  * [Data Manipulation](#data-manipulation)
+    + [How can we change the column data type in SQL?](#how-can-we-change-the-column-data-type-in-sql)
+    + [What are the different types of constraints?](#what-are-the-different-types-of-constraints)
+    + [How do you handle NULL values?](#how-do-you-handle-null-values)
+  * [Transaction Management](#transaction-management)
+    + [What is MVCC (Multi-Version Concurrency Control)?](#what-is-mvcc-multi-version-concurrency-control)
+    + [What are the transaction isolation levels?](#what-are-the-transaction-isolation-levels)
+    + [How does PostgreSQL handle deadlocks?](#how-does-postgresql-handle-deadlocks)
+  * [Backup and Recovery](#backup-and-recovery)
+    + [What are the backup methods?](#what-are-the-backup-methods)
+    + [How do you implement replication?](#how-do-you-implement-replication)
+    + [What is WAL (Write-Ahead Logging)?](#what-is-wal-write-ahead-logging)
+  * [Performance Tuning](#performance-tuning)
+    + [How do you optimize queries?](#how-do-you-optimize-queries)
+    + [What are the important configuration parameters?](#what-are-the-important-configuration-parameters)
+    + [How do you handle large tables?](#how-do-you-handle-large-tables)
+  * [Security](#security)
+    + [What are the security features?](#what-are-the-security-features)
+    + [How do you implement row-level security?](#how-do-you-implement-row-level-security)
+    + [What are the authentication methods?](#what-are-the-authentication-methods)
+  * [Monitoring and Maintenance](#monitoring-and-maintenance)
+    + [How do you monitor PostgreSQL?](#how-do-you-monitor-postgresql)
+    + [What is VACUUM and why is it important?](#what-is-vacuum-and-why-is-it-important)
+    + [How do you handle table bloat?](#how-do-you-handle-table-bloat)
+    + [What are the HA solutions?](#what-are-the-ha-solutions)
+    + [How do you implement failover?](#how-do-you-implement-failover)
+    + [What is connection pooling?](#what-is-connection-pooling)
+  * [High Availability](#high-availability)
+  * [Data Management](#data-management)
+    + [Data Lake](#data-lake)
+    + [Data Warehouse](#data-warehouse)
+    + [Data Mesh](#data-mesh)
+    + [Event Sourcing](#event-sourcing)
+    + [CQRS](#cqrs)
+    + [Polyglot Persistence](#polyglot-persistence)
+    + [Data Replication](#data-replication)
+    + [Data Sharding](#data-sharding)
+  * [API Design](#api-design)
+    + [REST](#rest)
+    + [GraphQL](#graphql)
+    + [gRPC](#grpc)
+    + [API Versioning](#api-versioning)
+    + [API Gateway](#api-gateway)
+    + [API Documentation](#api-documentation)
+    + [API Security](#api-security)
+    + [Rate Limiting](#rate-limiting)
+  * [Error Handling](#error-handling)
+    + [Circuit Breaker](#circuit-breaker)
+    + [Retry Pattern](#retry-pattern)
+    + [Fallback Pattern](#fallback-pattern)
+    + [Bulkhead Pattern](#bulkhead-pattern)
+    + [Dead Letter Queue](#dead-letter-queue)
+    + [Error Tracking](#error-tracking)
+    + [Logging and Monitoring](#logging-and-monitoring)
+    + [Graceful Degradation](#graceful-degradation)
+  * [Scalability](#scalability)
+    + [Horizontal Scaling](#horizontal-scaling)
+    + [Vertical Scaling](#vertical-scaling)
+    + [Load Balancing](#load-balancing)
+    + [Database Sharding](#database-sharding)
+    + [Caching](#caching)
   * [What is a non-clustered index?](#what-is-a-non-clustered-index)
   * [Can you store binary data in PostgreSQL?](#can-you-store-binary-data-in-postgresql)
   * [Explain functions in PostgreSQL](#explain-functions-in-postgresql)
@@ -215,6 +300,22 @@
   * [What are the three phenomena that must be prevented between concurrent transactions in PostgreSQL?](#what-are-the-three-phenomena-that-must-be-prevented-between-concurrent-transactions-in-postgresql)
 - [Common Questions](#common-questions)
   * [Soft-Skills](#soft-skills)
+    + [Release is tomorrow, but someone does not want to merge](#release-is-tomorrow-but-someone-does-not-want-to-merge)
+    + [Feature without requirements - how?](#feature-without-requirements---how)
+    + [Your subordinate late for several tasks. What to do?](#your-subordinate-late-for-several-tasks-what-to-do)
+    + [What to do if task is blocked?](#what-to-do-if-task-is-blocked)
+    + [Where Agile is not suitable?](#where-agile-is-not-suitable)
+    + [Handling failed key feature](#handling-failed-key-feature)
+    + [Handling challenging subordinate](#handling-challenging-subordinate)
+    + [Documentation resistance](#documentation-resistance)
+    + [Conflict resolution](#conflict-resolution)
+    + [Technology selection](#technology-selection)
+  * [Technical Leadership](#technical-leadership)
+    + [How do you handle technical debt?](#how-do-you-handle-technical-debt)
+    + [Managing team growth](#managing-team-growth)
+    + [Handling production issues](#handling-production-issues)
+    + [Team motivation](#team-motivation)
+    + [Project estimation](#project-estimation)
   * [Management Questions](#management-questions)
   * [Planning Questions](#planning-questions)
   * [Leadership Questions](#leadership-questions)
@@ -231,14 +332,12 @@
 
 ### Mutable objects (call by reference):
 
-list, dict, set, byte array
+list, dict, set, bytearray
 
 ### Immutable objects (pass by value):
 - int, float, complex, string, 
-
-- tuple (the “value” of an immutable object can’t change, but it’s constituent objects can.), 
-
-- frozen set [note: immutable version of set], 
+- tuple (the "value" of an immutable object can't change, but its constituent objects can.), 
+- frozenset [note: immutable version of set], 
 - bytes
 
 ### Features:
@@ -246,7 +345,7 @@ list, dict, set, byte array
 - Python handles mutable and immutable objects differently.
 - Immutable are quicker to access than mutable objects.
 - Mutable objects are great to use when you need to change the size of the object, example list, dict etc.. Immutables are used when you need to ensure that the object you made will always stay the same.
-- Immutable objects are fundamentally expensive to “change”, because doing so involves creating a copy. Changing mutable objects is cheap.
+- Immutable objects are fundamentally expensive to "change", because doing so involves creating a copy. Changing mutable objects is cheap.
 
 ### How objects are passed to Functions
 
@@ -311,22 +410,22 @@ In addition to compiling source code to bytecode, `compile` supports compiling a
 
 The `code` module provides facilities to implement read-eval-print loops in Python. Two classes and convenience functions are included which can be used to build applications which provide an **interactive interpreter prompt**.
 
-The `codeop` module provides utilities upon which the Python read-eval-print loop can be emulated, as is done in the `code` module. As a result, you probably don’t want to use the module directly; if you want to include such a loop in your program you probably want to use the code module instead.
+The `codeop` module provides utilities upon which the Python read-eval-print loop can be emulated, as is done in the `code` module. As a result, you probably don't want to use the module directly; if you want to include such a loop in your program you probably want to use the code module instead.
 
 ## Advanced differences  between 2.x and 3.x in general
 
 ### Division operator
-If we are porting our code or executing python 3.x code in python 2.x, it can be dangerous if integer division changes go unnoticed (since it doesn’t raise any error). It is preferred to use the floating value (like 7.0/5 or 7/5.0) to get the expected result when porting our code. 
+If we are porting our code or executing python 3.x code in python 2.x, it can be dangerous if integer division changes go unnoticed (since it doesn't raise any error). It is preferred to use the floating value (like 7.0/5 or 7/5.0) to get the expected result when porting our code. 
 ### `print` function
 This is the most well-known change. In this, the print keyword in Python 2.x is replaced by the print() function in Python 3.x. However, parentheses work in Python 2 if space is added after the print keyword because the interpreter evaluates it as an expression. 
 ### Unicode
 In Python 2, an implicit str type is ASCII. But in Python 3.x implicit str type is Unicode. 
 
 ### `xrange`
-xrange() of Python 2.x doesn’t exist in Python 3.x. In Python 2.x, range returns a list i.e. range(3) returns [0, 1, 2] while xrange returns a xrange object i. e., xrange(3) returns iterator object which works similar to Java iterator and generates number when needed. 
+xrange() of Python 2.x doesn't exist in Python 3.x. In Python 2.x, range returns a list i.e. range(3) returns [0, 1, 2] while xrange returns a xrange object i. e., xrange(3) returns iterator object which works similar to Java iterator and generates number when needed. 
 
 ### Error Handling
-There is a small change in error handling in both versions. In python 3.x, ‘as’ keyword is required. 
+There is a small change in error handling in both versions. In python 3.x, 'as' keyword is required. 
 
 ### `_future_` module
 The idea of the __future__ module is to help migrate to Python 3.x. 
@@ -344,7 +443,7 @@ A sequence of objects of any type(`string`, `bytes`, `tuple`, `list` or `range`)
 ## OrderedDict, DefaultDict
 An OrderedDict is a dictionary subclass that remembers the order that keys were first inserted. The only difference between dict() and OrderedDict() is that:
 
-`OrderedDict` preserves the order in which the keys are inserted. A regular dict doesn’t track the insertion order and iterating it gives the values in an arbitrary order. By contrast, the order the items are inserted is remembered by OrderedDict.
+`OrderedDict` preserves the order in which the keys are inserted. A regular dict doesn't track the insertion order and iterating it gives the values in an arbitrary order. By contrast, the order the items are inserted is remembered by OrderedDict.
 
 `Defaultdict` is a container like dictionaries present in the module collections. `Defaultdict` is a sub-class of the dictionary class that returns a dictionary-like object. The functionality of both dictionaries and defaultdict are almost same except for the fact that defaultdict never raises a KeyError. It provides a default value for the key that does not exists.
 
@@ -394,7 +493,7 @@ Weak references are used to implement caches and mappings that contain massive d
 
 ## Raw strings
 
-Python raw string is created by prefixing a string literal with ‘r’ or ‘R’. Python raw string treats backslash (\) as a literal character. This is useful when we want to have a string that contains backslash and don’t want it to be treated as an escape character.
+Python raw string is created by prefixing a string literal with 'r' or 'R'. Python raw string treats backslash (\) as a literal character. This is useful when we want to have a string that contains backslash and don't want it to be treated as an escape character.
 
 
 ## Unicode and ASCII strings	
@@ -451,7 +550,7 @@ def add_to_database(connection_string):
 ```
 
 ## Coroutines
-Coroutines declared with the `async`/`await` syntax is the preferred way of writing asyncio applications. For example, the following snippet of code (requires Python 3.7+) prints “hello”, waits 1 second, and then prints “world”:
+Coroutines declared with the `async`/`await` syntax is the preferred way of writing asyncio applications. For example, the following snippet of code (requires Python 3.7+) prints "hello", waits 1 second, and then prints "world":
 ```python
 >>> import asyncio
 
@@ -463,6 +562,78 @@ Coroutines declared with the `async`/`await` syntax is the preferred way of writ
 >>> asyncio.run(main())
 hello
 world
+```
+
+## Pattern Matching (Python 3.10+)
+Structural pattern matching with `match` and `case` statements is a powerful feature introduced in Python 3.10. It allows for more elegant and readable code when dealing with complex data structures.
+
+### Key Features:
+- Pattern matching for sequences, mappings, and objects
+- Guards and capture patterns
+- Example:
+```python
+def process_command(command):
+    match command.split():
+        case ["go", direction]:
+            return f"Moving {direction}"
+        case ["pick", "up", item]:
+            return f"Picking up {item}"
+        case ["quit"]:
+            return "Quitting"
+        case _:
+            return "Unknown command"
+```
+
+## Exception Groups (Python 3.11+)
+Exception Groups provide a way to handle multiple exceptions simultaneously, making error handling more robust and flexible.
+
+### Key Features:
+- Handling multiple exceptions simultaneously
+- Exception group hierarchy
+- `except*` syntax for handling exception groups
+- Example:
+```python
+try:
+    raise ExceptionGroup("group", [
+        ValueError("invalid value"),
+        TypeError("invalid type")
+    ])
+except* ValueError as e:
+    print(f"Handled ValueError: {e}")
+except* TypeError as e:
+    print(f"Handled TypeError: {e}")
+```
+
+## Type Parameter Syntax (Python 3.12+)
+The new type parameter syntax provides a more intuitive way to work with generic types and type parameters.
+
+### Key Features:
+- Generic type parameters with square brackets
+- Type aliases with type parameters
+- Example:
+```python
+type List[T] = list[T]
+
+def first[T](items: list[T]) -> T:
+    return items[0]
+```
+
+## Per-Interpreter GIL (Python 3.12+)
+The Per-Interpreter GIL feature allows for better concurrency by providing separate GILs for different interpreters.
+
+### Key Features:
+- Sub-interpreter support with separate GIL
+- Improved concurrency with multiple interpreters
+- Example:
+```python
+import subinterpreter
+
+def run_in_subinterpreter():
+    with subinterpreter.create() as interp:
+        interp.run("""
+            import threading
+            # Each subinterpreter has its own GIL
+        """)
 ```
 
 # Functions in Python	
@@ -619,7 +790,7 @@ if mystring in functions:
 
 ## Function introspection
 
-Introspection is an ability to determine the type of an object at runtime. Everything in python is an object. Every object in Python may have attributes and methods. By using introspection, we can dynamically examine python objects. Code Introspection is used for examining the classes, methods, objects, modules, keywords and get information about them so that we can utilize it. Introspection reveals useful information about your program’s objects. 
+Introspection is an ability to determine the type of an object at runtime. Everything in python is an object. Every object in Python may have attributes and methods. By using introspection, we can dynamically examine python objects. Code Introspection is used for examining the classes, methods, objects, modules, keywords and get information about them so that we can utilize it. Introspection reveals useful information about your program's objects. 
 
 - `type()`: This function returns the type of an object.
 - `dir()`: This function return list of methods and attributes associated with that object.
@@ -636,7 +807,7 @@ Introspection is an ability to determine the type of an object at runtime. Every
 - `__name__`	Return the name of the object.
 
 ## Implementation details of functional programming, for vs map
-Functional programming is a programming paradigm in which the primary method of computation is evaluation of pure functions. Although Python is not primarily a functional language, it’s good to be familiar with `lambda`, `map()`, `filter()`, and `reduce()` because they can help you write concise, high-level, parallelizable code. You’ll also see them in code that others have written.
+Functional programming is a programming paradigm in which the primary method of computation is evaluation of pure functions. Although Python is not primarily a functional language, it's good to be familiar with `lambda`, `map()`, `filter()`, and `reduce()` because they can help you write concise, high-level, parallelizable code. You'll also see them in code that others have written.
 
 ```python
 list(
@@ -681,17 +852,17 @@ func.__getattribute__("a")
 # Scopes in Python	
 ## LEGB rule
 
-Python resolves names using the so-called LEGB rule, which is named after the Python scope for names. The letters in LEGB stand for Local, Enclosing, Global, and Built-in. Here’s a quick overview of what these terms mean:
+Python resolves names using the so-called LEGB rule, which is named after the Python scope for names. The letters in LEGB stand for Local, Enclosing, Global, and Built-in. Here's a quick overview of what these terms mean:
 
-1. Local (or function) scope is the code block or body of any Python function or lambda expression. This Python scope contains the names that you define inside the function. These names will only be visible from the code of the function. It’s created at function call, not at function definition, so you’ll have as many different local scopes as function calls. This is true even if you call the same function multiple times, or recursively. Each call will result in a new local scope being created.
+1. Local (or function) scope is the code block or body of any Python function or lambda expression. This Python scope contains the names that you define inside the function. These names will only be visible from the code of the function. It's created at function call, not at function definition, so you'll have as many different local scopes as function calls. This is true even if you call the same function multiple times, or recursively. Each call will result in a new local scope being created.
 
 2. Enclosing (or nonlocal) scope is a special scope that only exists for nested functions. If the local scope is an inner or nested function, then the enclosing scope is the scope of the outer or enclosing function. This scope contains the names that you define in the enclosing function. The names in the enclosing scope are visible from the code of the inner and enclosing functions.
 
 3. Global (or module) scope is the top-most scope in a Python program, script, or module. This Python scope contains all of the names that you define at the top level of a program or a module. Names in this Python scope are visible from everywhere in your code. `dir()`
 
-4. Built-in scope is a special Python scope that’s created or loaded whenever you run a script or open an interactive session. This scope contains names such as keywords, functions, exceptions, and other attributes that are built into Python. Names in this Python scope are also available from everywhere in your code. It’s automatically loaded by Python when you run a program or script. `dir(__builtins__)`: 152 names
+4. Built-in scope is a special Python scope that's created or loaded whenever you run a script or open an interactive session. This scope contains names such as keywords, functions, exceptions, and other attributes that are built into Python. Names in this Python scope are also available from everywhere in your code. It's automatically loaded by Python when you run a program or script. `dir(__builtins__)`: 152 names
 
-The LEGB rule is a kind of name lookup procedure, which determines the order in which Python looks up names. For example, if you reference a given name, then Python will look that name up sequentially in the local, enclosing, global, and built-in scope. If the name exists, then you’ll get the first occurrence of it. Otherwise, you’ll get an error.
+The LEGB rule is a kind of name lookup procedure, which determines the order in which Python looks up names. For example, if you reference a given name, then Python will look that name up sequentially in the local, enclosing, global, and built-in scope. If the name exists, then you'll get the first occurrence of it. Otherwise, you'll get an error.
 
 When you call `dir()` with no arguments, you get the list of names available in your main global Python scope. Note that if you assign a new name (like var here) at the top level of the module (which is `__main__` here), then that name will be added to the list returned by `dir()`.
 
@@ -775,11 +946,11 @@ The SOLID acronym was introduced later, around 2004, by Michael Feathers.
 
 - Encapsulation - binding the data and functions which operate on that data into a single unit, the class
 
-- Abstraction - treating a system as a “black box,” where it’s not important to understand the gory inner workings in order to reap the benefits of using it.
+- Abstraction - treating a system as a "black box," where it's not important to understand the gory inner workings in order to reap the benefits of using it.
 
-- Inheritance - if a class inherits from another class, it automatically obtains a lot of the same functionality and properties from that class and can be extended to contain separate code and data. A nice feature of inheritance is that it often leads to good code reuse since a parent class’ functions don’t need to be re-defined in any of its child classes.
+- Inheritance - if a class inherits from another class, it automatically obtains a lot of the same functionality and properties from that class and can be extended to contain separate code and data. A nice feature of inheritance is that it often leads to good code reuse since a parent class' functions don't need to be re-defined in any of its child classes.
 
-- Polymorphism - Because derived objects share the same interface as their parents, the calling code can call any function in that class’ interface. At run-time, the appropriate function will be called depending on the type of object passed leading to possibly different behaviors.
+- Polymorphism - Because derived objects share the same interface as their parents, the calling code can call any function in that class' interface. At run-time, the appropriate function will be called depending on the type of object passed leading to possibly different behaviors.
 
 
 ## abstract base class
@@ -1048,7 +1219,7 @@ Using the tentative new MRO algorithm, the MRO for these classes would be Z, X, 
 
 Thus, in Python 2.3, we abandoned my home-grown 2.2 MRO algorithm in favor of the academically vetted C3 algorithm. One outcome of this is that Python will now reject any inheritance hierarchy that has an inconsistent ordering of base classes. For instance, in the previous example, there is an ordering conflict between class X and Y. For class X, there is a rule that says class A should be checked before class B. However, for class Y, the rule says that class B should be checked before A. In isolation, this discrepancy is fine, but if X and Y are ever combined together in the same inheritance hierarchy for another class (such as in the definition of class Z), that class will be rejected by the C3 algorithm. This, of course, matches the Zen of Python's "errors should never pass silently" rule.
 
-**In Python, the MRO is from bottom to top and left to right. This means that, first, the method is searched in the class of the object. If it’s not found, it is searched in the immediate super class. In the case of multiple super classes, it is searched left to right, in the order by which was declared by the developer. For example:**
+**In Python, the MRO is from bottom to top and left to right. This means that, first, the method is searched in the class of the object. If it's not found, it is searched in the immediate super class. In the case of multiple super classes, it is searched left to right, in the order by which was declared by the developer. For example:**
 
 ## Mixins
 
@@ -1125,7 +1296,7 @@ class Right(Base):
 # Troubleshooting in Python	
 ## Types of profilers: Static and dynamic profilers
 
-Serious software development calls for performance optimization. When you start optimizing application performance, you can’t escape looking at profilers. Whether monitoring production servers or tracking frequency and duration of method calls, profilers run the gamut
+Serious software development calls for performance optimization. When you start optimizing application performance, you can't escape looking at profilers. Whether monitoring production servers or tracking frequency and duration of method calls, profilers run the gamut
 
 ### `trace` module
 
@@ -1139,16 +1310,16 @@ You can do several things with trace:
 
 By contrast, faulthandler has slightly better Python documentation. It states that its purpose is to dump Python tracebacks explicitly on a fault, after a timeout, or on a user signal. It also works well with other system fault handlers like Apport or the Windows fault handler. Both the faulthandler and trace modules provide more tracing abilities and can help you debug your Python code. For more profiling statistics, see the next section.
 
-If you’re a beginner to tracing, I recommend you start simple with trace.
+If you're a beginner to tracing, I recommend you start simple with trace.
 
 ### application performance monitoring (APM) tools that fit
 
 Datadog in my production
 
 ### What part of the code should I profile?
-Now let’s delve into profiling specifics. The term “profiling” is mainly used for performance testing, and the purpose of performance testing is to find bottlenecks by doing deep analysis. So you can use tracing tools to help you with profiling. Recall that tracing is when software developers log information about a software execution. Therefore, logging performance metrics is also a way to perform profiling analysis.
+Now let's delve into profiling specifics. The term "profiling" is mainly used for performance testing, and the purpose of performance testing is to find bottlenecks by doing deep analysis. So you can use tracing tools to help you with profiling. Recall that tracing is when software developers log information about a software execution. Therefore, logging performance metrics is also a way to perform profiling analysis.
 
-But we’re not restricted to tracing. As profiling gains mindshare in the mainstream, we now have tools that perform profiling directly. Now the question is, what parts of the software do we profile (measure its performance metrics)?
+But we're not restricted to tracing. As profiling gains mindshare in the mainstream, we now have tools that perform profiling directly. Now the question is, what parts of the software do we profile (measure its performance metrics)?
 
 ### Typically, we profile:
 
@@ -1164,7 +1335,7 @@ But we’re not restricted to tracing. As profiling gains mindshare in the mains
 
 Both cProfile and profile are modules available in the Python 3 language. The numbers produced by these modules can be formatted into reports via the pstats module.
 
-Here’s an example of cProfile showing the numbers for a script:
+Here's an example of cProfile showing the numbers for a script:
 ```python
 import cProfile
 import re
@@ -1192,10 +1363,10 @@ Document 1000 195.38 KB 200 B 13%
 ### Deterministic profiling versus statistical profiling
 When we do profiling, it means we need to monitor the execution. That in itself may affect the underlying software being monitored. Either we monitor all the function calls and exception events, or we use random sampling and deduce the numbers. The former is known as deterministic profiling, and the latter is statistical profiling. Of course, each method has its pros and cons. Deterministic profiling can be highly precise, but its extra overhead may affect its accuracy. Statistical profiling has less overhead in comparison, with the drawback being lower precision.
 
-cProfile, which I covered earlier, uses deterministic profiling. Let’s look at another open source Python profiler that uses statistical profiling: pyinstrument.
+cProfile, which I covered earlier, uses deterministic profiling. Let's look at another open source Python profiler that uses statistical profiling: pyinstrument.
 
 ### `pyinstrument`
-Pyinstrument differentiates itself from other typical profilers in two ways. First, it emphasizes that it uses statistical profiling instead of deterministic profiling. It argues that while deterministic profiling can give you more precision than statistical profiling, the extra precision requires more overhead. The extra overhead may affect the accuracy and lead to optimizing the wrong part of the program. Specifically, it states that using deterministic profiling means that “code that makes a lot of Python function calls invokes the profiler a lot, making it slower.” This is how results get distorted and the wrong part of the program gets optimized.
+Pyinstrument differentiates itself from other typical profilers in two ways. First, it emphasizes that it uses statistical profiling instead of deterministic profiling. It argues that while deterministic profiling can give you more precision than statistical profiling, the extra precision requires more overhead. The extra overhead may affect the accuracy and lead to optimizing the wrong part of the program. Specifically, it states that using deterministic profiling means that "code that makes a lot of Python function calls invokes the profiler a lot, making it slower." This is how results get distorted and the wrong part of the program gets optimized.
 
 ## `resource` module	
 
@@ -1223,9 +1394,9 @@ print(getrusage(RUSAGE_SELF))
 
 ## context managers contextlib decorator, with-enabled class
 
-The with statement in Python is a quite useful tool for properly managing external resources in your programs. It allows you to take advantage of existing context managers to automatically handle the setup and teardown phases whenever you’re dealing with external resources or with operations that require those phases.
+The with statement in Python is a quite useful tool for properly managing external resources in your programs. It allows you to take advantage of existing context managers to automatically handle the setup and teardown phases whenever you're dealing with external resources or with operations that require those phases.
 
-Besides, the context management protocol allows you to create your own context managers so you can customize the way you deal with system resources. So, what’s the with statement good for?
+Besides, the context management protocol allows you to create your own context managers so you can customize the way you deal with system resources. So, what's the with statement good for?
 
 ```python
 # writable.py
@@ -1285,7 +1456,7 @@ asyncio.run(main())
 
 A mock object substitutes and imitates a real object within a testing environment. It is a versatile and powerful tool for improving the quality of your tests.
 
-One reason to use Python mock objects is to control your code’s behavior during testing.
+One reason to use Python mock objects is to control your code's behavior during testing.
 
 For example, if your code makes HTTP requests to external services, then your tests execute predictably only so far as the services are behaving as you expected. Sometimes, a temporary change in the behavior of these external services can cause intermittent failures within your test suite.
 
@@ -1341,11 +1512,11 @@ Coverage.py is one of the most popular code coverage tools for Python. It uses c
 
 ## nosetests, doctests	
 
-`nose2` is the successor to nose.  It’s unittest with plugins.
+`nose2` is the successor to nose.  It's unittest with plugins.
 
 `nose2` is a new project and does not support all of the features of nose. See differences for a thorough rundown.
 
-`nose2`’s purpose is to extend unittest to make testing nicer and easier to understand.
+`nose2`'s purpose is to extend unittest to make testing nicer and easier to understand.
 
 nose2 vs pytest
 nose2 may or may not be a good fit for your project.
@@ -1354,11 +1525,11 @@ If you are new to python testing, we encourage you to also consider `pytest`, a 
 
 The doctest module searches for pieces of text that look like interactive Python sessions, and then executes those sessions to verify that they work exactly as shown. There are several common ways to use doctest:
 
-- To check that a module’s docstrings are up-to-date by verifying that all interactive examples still work as documented.
+- To check that a module's docstrings are up-to-date by verifying that all interactive examples still work as documented.
 
 - To perform regression testing by verifying that interactive examples from a test file or a test object work as expected.
 
-- To write tutorial documentation for a package, liberally illustrated with input-output examples. Depending on whether the examples or the expository text are emphasized, this has the flavor of “literate testing” or “executable documentation”.
+- To write tutorial documentation for a package, liberally illustrated with input-output examples. Depending on whether the examples or the expository text are emphasized, this has the flavor of "literate testing" or "executable documentation".
 
 `python example.py -v`
 
@@ -1366,7 +1537,7 @@ The doctest module searches for pieces of text that look like interactive Python
 
 ## 3 generations of GC
 
-The main garbage collection algorithm used by CPython is reference counting. The basic idea is that CPython counts how many different places there are that have a reference to an object. Such a place could be another object, or a global (or static) C variable, or a local variable in some C function. When an object’s reference count becomes zero, the object is deallocated. If it contains references to other objects, their reference counts are decremented. Those other objects may be deallocated in turn, if this decrement makes their reference count become zero, and so on. The reference count field can be examined using the sys.getrefcount function (notice that the value returned by this function is always 1 more as the function also has a reference to the object when called):
+The main garbage collection algorithm used by CPython is reference counting. The basic idea is that CPython counts how many different places there are that have a reference to an object. Such a place could be another object, or a global (or static) C variable, or a local variable in some C function. When an object's reference count becomes zero, the object is deallocated. If it contains references to other objects, their reference counts are decremented. Those other objects may be deallocated in turn, if this decrement makes their reference count become zero, and so on. The reference count field can be examined using the sys.getrefcount function (notice that the value returned by this function is always 1 more as the function also has a reference to the object when called):
 ```python
 x = object()
 sys.getrefcount(x)
@@ -1388,7 +1559,7 @@ sys.getrefcount(container)
 del container
 ```
 
-In this example, container holds a reference to itself, so even when we remove our reference to it (the variable “container”) the reference count never falls to 0 because it still has its own internal reference. Therefore it would never be cleaned just by simple reference counting. For this reason some additional machinery is needed to clean these reference cycles between objects once they become unreachable. This is the cyclic garbage collector, usually called just Garbage Collector (GC), even though reference counting is also a form of garbage collection.
+In this example, container holds a reference to itself, so even when we remove our reference to it (the variable "container") the reference count never falls to 0 because it still has its own internal reference. Therefore it would never be cleaned just by simple reference counting. For this reason some additional machinery is needed to clean these reference cycles between objects once they become unreachable. This is the cyclic garbage collector, usually called just Garbage Collector (GC), even though reference counting is also a form of garbage collection.
 
 In order to limit the time each garbage collection takes, the GC uses a popular optimization: generations. The main idea behind this concept is the assumption that most objects have a very short lifespan and can thus be collected shortly after their creation. This has proven to be very close to the reality of many Python programs as many temporary objects are created and destroyed very fast. The older an object is the less likely it is that it will become unreachable.
 
@@ -1448,7 +1619,7 @@ The garbage collector module provides the Python function is_tracked(obj), which
 ### Which type of objects are tracked?
  For this reason some additional machinery is needed to clean these reference cycles between objects once they become unreachable. This is the cyclic garbage collector, usually called just Garbage Collector (GC), even though reference counting is also a form of garbage collection.
 
-As a general rule, instances of atomic types aren’t tracked and instances of non-atomic types (containers, user-defined objects…) are. However, some type-specific optimizations can be present in order to suppress the garbage collector footprint of simple instances. Some examples of native types that benefit from delayed tracking:
+As a general rule, instances of atomic types aren't tracked and instances of non-atomic types (containers, user-defined objects…) are. However, some type-specific optimizations can be present in order to suppress the garbage collector footprint of simple instances. Some examples of native types that benefit from delayed tracking:
 
 Tuples containing only immutable objects (integers, strings etc, and recursively, tuples of immutable objects) do not need to be tracked
 
@@ -1456,11 +1627,11 @@ Dictionaries containing only immutable objects also do not need to be tracked
 
 ## recommendations for GC usage	
 
-General rule: Don’t change garbage collector behavior
+General rule: Don't change garbage collector behavior
 
 ## Memory leaks/deleters issues
 
-The Python program, just like other programming languages, experiences memory leaks. Memory leaks in Python happen if the garbage collector doesn’t clean and eliminate the unreferenced or unused data from Python.
+The Python program, just like other programming languages, experiences memory leaks. Memory leaks in Python happen if the garbage collector doesn't clean and eliminate the unreferenced or unused data from Python.
 
 Python developers have tried to address memory leaks through the addition of features that free unused memory automatically.
 
@@ -1473,7 +1644,7 @@ The mechanism used by the CPython interpreter to assure that only one thread exe
 
 However, some extension modules, either standard or third-party, are designed so as to release the GIL when doing computationally-intensive tasks such as compression or hashing. Also, the GIL is always released when doing I/O.
 
-Past efforts to create a “free-threaded” interpreter (one which locks shared data at a much finer granularity) have not been successful because performance suffered in the common single-processor case. It is believed that overcoming this performance issue would make the implementation much more complicated and therefore costlier to maintain.
+Past efforts to create a "free-threaded" interpreter (one which locks shared data at a much finer granularity) have not been successful because performance suffered in the common single-processor case. It is believed that overcoming this performance issue would make the implementation much more complicated and therefore costlier to maintain.
 
 ```python
 >>> import sys
@@ -1654,7 +1825,7 @@ if (!PyEval_ThreadsInitialized())
 # Distributing and documentation in Python	
 ## `distutils`, setup.py	
 
-`distutils` is deprecated with removal planned for Python 3.12. See the What’s New entry for more information.
+`distutils` is deprecated with removal planned for Python 3.12. See the What's New entry for more information.
 
 Most Python users will not want to use this module directly, but instead use the cross-version tools maintained by the Python Packaging Authority. In particular, `setuptools` is an enhanced alternative to distutils that provides:
 
@@ -1662,7 +1833,7 @@ Most Python users will not want to use this module directly, but instead use the
 
 - additional mechanisms for configuring which files to include in source releases (including plugins for integration with version control systems)
 
-- the ability to declare project “entry points”, which can be used as the basis for application plugin systems
+- the ability to declare project "entry points", which can be used as the basis for application plugin systems
 
 - the ability to automatically generate Windows command line executables at installation time rather than needing to prebuild them
 
@@ -1948,7 +2119,7 @@ Cons of post-commit:
 # Release Strategy	
 ## Centralized (Trunk Based) approach
 
-Trunk-based development is a version control management practice where developers merge small, frequent updates to a core “trunk” or main branch. Since it streamlines merging and integration phases, it helps achieve CI/CD and increases software delivery and organizational performance.
+Trunk-based development is a version control management practice where developers merge small, frequent updates to a core "trunk" or main branch. Since it streamlines merging and integration phases, it helps achieve CI/CD and increases software delivery and organizational performance.
 
 ## GitFlow approach
 
@@ -1980,17 +2151,17 @@ Infrastructure as code (IaC) is the process of managing and provisioning compute
 * Make a risk log
 * Make contingency plans
 
-1. `Logical dependencies`. Also known as causal dependencies. These dependencies are an inherent part of the project and cannot be avoided. Tasks characterized as logical dependency usually use the output of the preceding tasks as input so you can’t run them in parallel. Consider baking a cake as your project. You can’t start the process unless you have all the ingredients you need.
+1. `Logical dependencies`. Also known as causal dependencies. These dependencies are an inherent part of the project and cannot be avoided. Tasks characterized as logical dependency usually use the output of the preceding tasks as input so you can't run them in parallel. Consider baking a cake as your project. You can't start the process unless you have all the ingredients you need.
 
-2. `Resource dependencies`. This dependency originates from a project constraint as it deals with the availability of shared resources. If two tasks require the same resource for completion, then they’ll be dependent on the completion of the other.
+2. `Resource dependencies`. This dependency originates from a project constraint as it deals with the availability of shared resources. If two tasks require the same resource for completion, then they'll be dependent on the completion of the other.
 
 3. `Preferential dependencies`. These dependencies generally depend on the team members,  other stakeholders, and industrial practices. Preferential dependencies arise when tasks are scheduled to follow developed standard practices. In most cases, the project can compete even if you ignore the preferential dependencies in your tasks, but there will be some quality issues.
 
-4. `External dependencies`. No matter how much you plan, there are things bound to be out of your control. Some tasks are dependent on outside factors and project managers can’t do anything to influence their project progress. To deal with these dependencies, it’s recommended to have a backup plan. Delays from the suppliers or other unforeseen circumstances may take place which can affect your progress. A good project manager always makes some contingency plans so everything keeps running smoothly even in the face of adversity.
+4. `External dependencies`. No matter how much you plan, there are things bound to be out of your control. Some tasks are dependent on outside factors and project managers can't do anything to influence their project progress. To deal with these dependencies, it's recommended to have a backup plan. Delays from the suppliers or other unforeseen circumstances may take place which can affect your progress. A good project manager always makes some contingency plans so everything keeps running smoothly even in the face of adversity.
 
 5. `Cross-team dependencies`. This is a common occurrence in large organizations. Sometimes multiple teams work on a single, complex project and they rely on each other to complete the project on time. Effective project time management can be implemented to avoid long hours.
 
-`Pipenv` is a dependency manager for Python projects. If you’re familiar with Node.js’ npm or Ruby’s bundler, it is similar in spirit to those tools. While pip alone is often sufficient for personal use, Pipenv is recommended for collaborative projects as it’s a higher-level tool that simplifies dependency management for common use cases.
+`Pipenv` is a dependency manager for Python projects. If you're familiar with Node.js' npm or Ruby's bundler, it is similar in spirit to those tools. While pip alone is often sufficient for personal use, Pipenv is recommended for collaborative projects as it's a higher-level tool that simplifies dependency management for common use cases.
 
 `hatch` for opinionated coverage of even more steps in the project management workflow, such as incrementing versions, tagging releases, and creating new skeleton projects from project templates.
 
@@ -2028,7 +2199,7 @@ https://www.bmc.com/blogs/devops-branching-strategies
 Git Flow is the most widely known branching strategy that takes a multi-branch approach to manage the source code. This approach consists of two main branches that live throughout the development lifecycle.
 
 Primary Branches
-- `master`. The primary branch where all the production code is stored. Once the code in the “develop” branch is ready to be released, the changes are merged to the master branch and used in the deployment.
+- `master`. The primary branch where all the production code is stored. Once the code in the "develop" branch is ready to be released, the changes are merged to the master branch and used in the deployment.
 - `develop`. This is where all the actual development happens. All the pre-production code is stored here, and the completed code of all the supporting branches is merged directly to the develop branch.
 - `feature-*` feature branches are used to develop new features and branches off exclusively from the develop branch.
 - `hotfix-*` This is to deal with production issues where quick fixes are required. They can branch off from the master itself, but need to be merged to both master and develop branches.
@@ -2047,12 +2218,12 @@ As the name suggests, this strategy was introduced by GitHub, aiming to provide 
 ### Trunk Based Development (TBD)
 The Trunk Based Development strategy involves developers integrating their changes directly into a shared trunk (master) at least once a day. This shared trunk is always in a releasable state. Developers can pull from this trunk, create a local repository, and then push the code to the shared trunk.
 
-This regular integration enables developers to view each other’s changes quickly and immediately react if there are any conflicts.
+This regular integration enables developers to view each other's changes quickly and immediately react if there are any conflicts.
 
 ### GitLab Flow
 The GitLab strategy combines feature-driven development and feature branches with issue tracking. This strategy is similar to GitHub flow yet includes environmental branches such as `development`, `pre-production`, and `production`.
 
-In GitLab Flow, development happens in one of these environmental branches, and verified and tested code is merged to other branches until they reach the production branch. Let’s assume that we have the three environmental branches mentioned above. In that case, the development workflow will be:
+In GitLab Flow, development happens in one of these environmental branches, and verified and tested code is merged to other branches until they reach the production branch. Let's assume that we have the three environmental branches mentioned above. In that case, the development workflow will be:
 
 ## Continuous Integration	
 * Follows CI rules (use project's CI tools, immediately fix broken build, etc.)	
@@ -2110,32 +2281,138 @@ Mutation testing, also known as code mutation testing, is a form of white box te
 
 ## Health Check	
 
-Healthcheck is a library to write simple healthcheck functions that can be used to monitor your application. It is possible to use in a Flask app or Tornado app. It’s useful for asserting that your dependencies are up and running and your application can respond to HTTP requests
+Healthcheck is a library to write simple healthcheck functions that can be used to monitor your application. It is possible to use in a Flask app or Tornado app. It's useful for asserting that your dependencies are up and running and your application can respond to HTTP requests
 
 django-health-check https://django-health-check.readthedocs.io/en/latest/readme.html
 
 py-healthcheck https://pypi.org/project/py-healthcheck/
 
-## Main approaches for monitoring and Troubleshooting
+## Structured Logging
+- JSON-based logging format for better parsing and analysis
+- Popular libraries:
+  - structlog
+  - python-json-logger
+  - loguru
+- Example with structlog:
+```python
+import structlog
 
-https://www.datadoghq.com/product/ - can save all logs.
+logger = structlog.get_logger()
+
+logger.info("user_action", 
+    user_id=123, 
+    action="login", 
+    ip="192.168.1.1"
+)
+```
+
+## Log Levels and Best Practices
+- DEBUG: Detailed information for debugging
+- INFO: General operational information
+- WARNING: Indicate a potential problem
+- ERROR: A more serious problem
+- CRITICAL: A program may not be able to continue
+- Best practices:
+  - Use appropriate log levels
+  - Include context in log messages
+  - Use structured logging
+  - Implement log rotation
+  - Consider log aggregation
+
+## Log Aggregation and Analysis
+- ELK Stack (Elasticsearch, Logstash, Kibana)
+- Graylog
+- Loki (part of Grafana stack)
+- Cloud-native solutions:
+  - AWS CloudWatch
+  - Google Cloud Logging
+  - Azure Monitor
+
+## Main approaches for monitoring and Troubleshooting
+- Application Performance Monitoring (APM):
+  - New Relic
+  - Datadog
+  - Sentry
+- Infrastructure Monitoring:
+  - Prometheus
+  - Grafana
+  - Zabbix
+- Log Management:
+  - ELK Stack
+  - Graylog
+  - Loki
+- Distributed Tracing:
+  - OpenTelemetry
+  - Jaeger
+  - Zipkin
 
 # Skills
 
 ## Leadership	
 * Has followers (recognized as leader at least by 2 people upon feedback from peers or by manager's observations)
-* Focuses the group on common goal and takes responsibility for team/group result.
-* Is able to organize teamwork effectively and engage employees in teamwork	
+* Mentoring and coaching abilities
+* Decision-making and problem-solving skills
+* Conflict resolution
+* Team building and motivation
+* Strategic thinking
+* Communication skills
+* Project management
+* Technical leadership
 
-## Planning and Organizing	
-* Prioritizing of activities and assignments, adjusts priorities when appropriate;
-* Determines assignment requirements by breaking them down into concrete tasks
-* Allocates appropriate amounts of time for completing own and others' work.	
+## Technical Skills
+* Advanced Python development
+* System architecture and design
+* Performance optimization
+* Security best practices
+* Testing and quality assurance
+* DevOps practices
+* Cloud platforms (AWS, GCP, Azure)
+* Containerization (Docker, Kubernetes)
+* CI/CD pipelines
+* Database design and optimization
+* API design and development
+* Microservices architecture
+* Monitoring and observability
+* Code review and technical documentation
+
+## Soft Skills
+* Effective communication
+* Team collaboration
+* Problem-solving
+* Time management
+* Adaptability
+* Emotional intelligence
+* Negotiation
+* Presentation skills
+* Active listening
+* Feedback giving and receiving
+
+## Project Management
+* Agile methodologies (Scrum, Kanban)
+* Risk management
+* Resource allocation
+* Timeline planning
+* Stakeholder management
+* Quality assurance
+* Change management
+* Budget management
+* Documentation management
+
+## Business Skills
+* Business analysis
+* Requirements gathering
+* Cost estimation
+* ROI calculation
+* Market analysis
+* Customer relationship management
+* Vendor management
+* Strategic planning
+* Business process optimization
 
 ## Delegation	
 * Delegates task responsibility to appropriate subordinates (considering positive and negative impact of delegation);
 * Defines and communicates basic parameters of delegated tasks (milestones and deadlines, type of control, expected results).	
-* Delegates based on a team member’s capabilities, experience, reliability and motivation.
+* Delegates based on a team member's capabilities, experience, reliability and motivation.
 * Clearly communicates all the parameters of the delegated responsibility, including definite goal, concrete success criteria, decision-making authority , constraints, etc., giving reasonable freedom in details
 * Establishes appropriate procedures to be informed of issues and results in areas of shared responsibility.
 * Knows what kind of work can be and shouldn't be delegated.
@@ -2247,7 +2524,7 @@ Lets you separate algorithms from the objects on which they operate.
 
 ## CAP
 
-CAP theorem, also known as Brewer’s theorem, stands for Consistency, Availability and Partition Tolerance. But let’s try to understand each, with an example.
+CAP theorem, also known as Brewer's theorem, stands for Consistency, Availability and Partition Tolerance. But let's try to understand each, with an example.
 
 ### Availability
 Imagine there is a very popular mobile operator in your city and you are its customer because of the amazing plans it offers. Besides that, they also provide an amazing customer care service where you can call anytime and get your queries and concerns answered quickly and efficiently. Whenever a customer calls them, the mobile operator is able to connect them to one of their customer care operators.
@@ -2256,9 +2533,9 @@ The customer is able to elicit any information required by her/him about his acc
 
 Availability means that every request from the user should elicit a response from the system. Whether the user wants to read or write, the user should get a response even if the operation was unsuccessful. This way, every operation is bound to terminate.
 
-For example, when you visit your bank’s ATM, you are able to access your account and its related information. Now even if you go to some other ATM, you should still be able to access your account. If you are only able to access your account from one ATM and not another, this means that the information is not available with all the ATMs.
+For example, when you visit your bank's ATM, you are able to access your account and its related information. Now even if you go to some other ATM, you should still be able to access your account. If you are only able to access your account from one ATM and not another, this means that the information is not available with all the ATMs.
 
-Availability is of importance when it is required that the client or user be able to access the data at all times, even if it is not consistent. For example, you should be able to see your friend’s Whatsapp status even if you are viewing an outdated one due to some network failure.
+Availability is of importance when it is required that the client or user be able to access the data at all times, even if it is not consistent. For example, you should be able to see your friend's Whatsapp status even if you are viewing an outdated one due to some network failure.
 
 ### Consistency
 Now, you have recently shifted to a new house in the city and you want to update your address registered with the mobile operator. You decide to call the customer care operator and update it with them. When you call, you connect with an operator. This operator makes the relevant changes in the system. But once you have put down the phone, you realize you told them the correct street name but the old house number (old habits die hard!).
@@ -2305,12 +2582,12 @@ Extensibility is the degree to which software is coded to incorporate future gro
 `Maintainability`
 Code maintainability is a qualitative measurement of how easy it is to make changes, and the risks associated with such changes.
 
-Developers can make judgments about maintainability when they make changes — if the change should take an hour but it ends up taking three days, the code probably isn’t that maintainable.
+Developers can make judgments about maintainability when they make changes — if the change should take an hour but it ends up taking three days, the code probably isn't that maintainable.
 
 Another way to gauge maintainability is to check the number of lines of code in a given software feature or in an entire application. Software with more lines can be harder to maintain.
 
 `Readability and Code Formatting`
-Readable code should use indentation and be formatted according to standards particular to the language it’s written in; this makes the application structure consistent and visible.
+Readable code should use indentation and be formatted according to standards particular to the language it's written in; this makes the application structure consistent and visible.
 
 `Testing`: The Next Bottleneck in Continuous Delivery | Download >>
 
@@ -2322,7 +2599,7 @@ Clarity is an indicator of quality that says good code should be unambiguous. If
 This, along with readability and documentation,  means any other developer can easily use code written by someone else, without taking a long time to understand how it works.
 
 `Well-documented`
-If the program is not documented, it will be difficult for other developers to use it, or even for the same developer to understand the code years from now. One common definition of quality is that it may be “used long term, can be carried across to future releases and products” (without being considered “legacy code”). Documentation is essential to make this happen.
+If the program is not documented, it will be difficult for other developers to use it, or even for the same developer to understand the code years from now. One common definition of quality is that it may be "used long term, can be carried across to future releases and products" (without being considered "legacy code"). Documentation is essential to make this happen.
 
 Documentation also provides a way to improve by formalizing the decisions you make when writing. When you document code and do it well, you need to think differently about each component and why it exists in the software. Writing out the reasons for certain programming decisions can improve application design.
 
@@ -2346,7 +2623,7 @@ WMFP automatically measures the complexity of existing source code. The metrics 
 The Halstead complexity measures were introduced in 1977. These measures include program vocabulary, program length, volume, difficulty, effort, and the estimated number of bugs in a module. The aim of the measurement is to assess the computational complexity of a program. The more complex any code is, the harder it is to maintain and the lower its quality.
 
 `Cyclomatic Complexity`
-Cyclomatic complexity is a metric that measures the structural complexity of a program. It does so by counting the number of linearly independent paths through a program’s source code. Methods with high cyclomatic complexity (greater than 10) are more likely to contain defects.
+Cyclomatic complexity is a metric that measures the structural complexity of a program. It does so by counting the number of linearly independent paths through a program's source code. Methods with high cyclomatic complexity (greater than 10) are more likely to contain defects.
 
 With cyclomatic complexity, developers get an indicator of how difficult it will be to test, maintain, and troubleshoot their programming. This metric can be combined with a size metric such as lines of code, to predict how easy the application will be to modify and maintain.
 
@@ -2401,7 +2678,7 @@ Database Table - Plural with underscores separating words (e.g., book_clubs).
 
 ## Django middleware
 
-Middleware is a framework of hooks into Django’s request/response processing. It’s a light, low-level “plugin” system for globally altering Django’s input or output.
+Middleware is a framework of hooks into Django's request/response processing. It's a light, low-level "plugin" system for globally altering Django's input or output.
 
 Each middleware component is responsible for doing some specific function. For example, Django includes a middleware component, AuthenticationMiddleware, that associates users with requests using sessions.
 
@@ -2437,17 +2714,17 @@ def simple_middleware(get_response):
 Runners:
 
 - `unittest`;
-- `nose` или nose2; (You may find that over time, as you write hundreds or even thousands of tests for your application, it becomes increasingly hard to understand and use the output from unittest. `nose` is compatible with any tests written using the unittest framework and can be used as a drop-in replacement for the unittest test runner. The development of nose as an open-source application fell behind, and a fork called nose2 was created. If you’re starting from scratch, it is recommended that you use nose2 instead of nose.)
+- `nose` или nose2; (You may find that over time, as you write hundreds or even thousands of tests for your application, it becomes increasingly hard to understand and use the output from unittest. `nose` is compatible with any tests written using the unittest framework and can be used as a drop-in replacement for the unittest test runner. The development of nose as an open-source application fell behind, and a fork called nose2 was created. If you're starting from scratch, it is recommended that you use nose2 instead of nose.)
 - `pytest`
 
 
 ## Test coverage: branch coverage
 
-Branch coverage is a metric that indicates whether all branches in a codebase are exercised by tests. A “branch” is one of the possible execution paths the code can take after a decision statement—e.g., an if statement—gets evaluated.
+Branch coverage is a metric that indicates whether all branches in a codebase are exercised by tests. A "branch" is one of the possible execution paths the code can take after a decision statement—e.g., an if statement—gets evaluated.
 
 Branch coverage is an important metric in that it can help a team or organization assess whether an application has been tested to completion. A low branch coverage shows that there are scenarios in the application lacking testing. Such scenarios might contain defects that will only manifest in edge cases when the application makes it to production.
 
-## Test types: performance, penetration, functional, smoke, е2е. 
+## Test types: performance, penetration, functional, smoke, e2e. 
 
 `performance` - https://locust.io/ Define user behaviour with Python code, and swarm your system with millions of simultaneous users.
 
@@ -2457,7 +2734,7 @@ Branch coverage is an important metric in that it can help a team or organizatio
 
 `Sanity` testing is a kind of Software Testing performed after receiving a software build, with minor changes in code, or functionality, to ascertain that the bugs have been fixed and no further issues are introduced due to these changes. The goal is to determine that the proposed functionality works roughly as expected. If sanity test fails, the build is rejected to save the time and costs involved in a more rigorous testing.
 
-`Smoke Testing` is a software testing process that determines whether the deployed software build is stable or not. Smoke testing is a confirmation for QA team to proceed with further software testing. It consists of a minimal set of tests run on each build to test software functionalities. Smoke testing is also known as “Build Verification Testing” or “Confidence Testing.”
+`Smoke Testing` is a software testing process that determines whether the deployed software build is stable or not. Smoke testing is a confirmation for QA team to proceed with further software testing. It consists of a minimal set of tests run on each build to test software functionalities. Smoke testing is also known as "Build Verification Testing" or "Confidence Testing."
 
 `End-to-end` testing frameworks are a powerful way to ensure that all moving parts within an application are configured correctly, and that the application's is functionally working correctly. `selenium` for python
 
@@ -2681,24 +2958,18 @@ There are four levels of transaction isolation used in SQL standard regarding th
 - Your subordinate late for several tasks. What to do?
 - What to do if task is blocked?
 - Where Agile is not suitable?
-- Imagine if your teammate was responsible for developing a key feature and he failed. How would you handle this situation with the customer who will have to shift the release due to it?
-- Let's assume you're TL and have subordinate who constantly challenges your architectural decisions. What would be your actions?  
-- There is a team member who doesn't want to write documentation. How you would encourage the person to do (his/her) duty? 
-- Let's imagine that you have a conflict with one of your subordinates. What are your actions in this case?
-- Could you please tell us about a recent challenge you had on your project? What was the context? How did you resolve it? 
-- You need to select between different technologies. How would you select between them? 
-- How do you refactor legacy code? Imagine that you need to rewrite some legacy class. What will be your steps? 
-- Describe the approach you used for refactoring the legacy code. How did you trace the legacy implementation back to the requirements? How did you make sure the refactored code works properly? 
-- In your self-review, you mentioned your appreciation of extreme programming. Have you guys introduced it in your team, and how exactly?
-- WHat does it mean for you to be D3/D4?
-- What is technical debt and how to manage it? 
-- Imagine you are starting new project from scratch, how are you going to choose technologies for this project? 
-- You've played a lead role on a project - please tell us what would do differently next time you have similar opportunity
-- What does it mean for you to be D3/D4 specialist. Why do you think you are eligible for D3 position? 
-- How do you choose between two or more frameworks? What do you consider when evaluating them?
-- How you manage time as too many non-project activities plus production project?
-- If wrote a script for the task, but your colleague changes it name and move it somewhere without changing it's content, how you could find the script? 
-- What are the functional and non-functional requirements? 
+- Handling failed key feature
+- Handling challenging subordinate
+- Documentation resistance
+- Conflict resolution
+- Technology selection
+ 
+## Technical Leadership
+- How do you handle technical debt?
+- Managing team growth
+- Handling production issues
+- Team motivation
+- Project estimation
  
 ## Management Questions
 - Your CV mentions that you made some optimization in your project. Can you please talk about this?
@@ -2772,3 +3043,118 @@ What will be your actions in case one of team members (or both of them) are out 
 - What different methods of organizing code review do you know? What are advantages and disadvantages of each way? 
 - How would you handle a disagreement during a code review? 
 - A junior dev in your team complains about code reviews. He/she feels them as a burden which slows progress down. How do you handle this situation? 
+
+## Creational Design Patterns
+
+## Modern Software Architecture Patterns
+- Event-Driven Architecture (EDA)
+- CQRS (Command Query Responsibility Segregation)
+- Event Sourcing
+- Microservices Architecture
+- Serverless Architecture
+- Hexagonal Architecture (Ports and Adapters)
+- Clean Architecture
+- Domain-Driven Design (DDD)
+
+## Cloud-Native Patterns
+- 12-Factor App methodology
+- Container Orchestration
+- Service Mesh
+- API Gateway
+- Circuit Breaker
+- Bulkhead Pattern
+- Sidecar Pattern
+- Ambassador Pattern
+- Adapter Pattern
+- Back Pressure Pattern
+
+## Security Patterns
+- OAuth 2.0 and OpenID Connect
+- JWT (JSON Web Tokens)
+- API Security
+- Zero Trust Architecture
+- Defense in Depth
+- Least Privilege Principle
+- Security by Design
+- DevSecOps practices
+
+## Performance Patterns
+- Caching Strategies
+- Load Balancing
+- Database Sharding
+- Read Replicas
+- Write-Ahead Logging
+- Connection Pooling
+- Rate Limiting
+- Circuit Breaking
+- Bulkhead Isolation
+
+## Testing Patterns
+- Test-Driven Development (TDD)
+- Behavior-Driven Development (BDD)
+- Continuous Testing
+- Shift-Left Testing
+- Test Pyramid
+- Feature Flags
+- A/B Testing
+- Chaos Engineering
+
+## DevOps Patterns
+- Infrastructure as Code (IaC)
+- GitOps
+- Continuous Integration/Deployment
+- Blue-Green Deployment
+- Canary Releases
+- Feature Flags
+- Configuration Management
+- Monitoring and Observability
+
+## Data Management Patterns
+- Data Lake
+- Data Warehouse
+- Data Mesh
+- Event Sourcing
+- CQRS
+- Polyglot Persistence
+- Data Replication
+- Data Sharding
+
+## API Design Patterns
+- REST
+- GraphQL
+- gRPC
+- API Versioning
+- API Gateway
+- API Documentation
+- API Security
+- Rate Limiting
+
+## Error Handling Patterns
+- Circuit Breaker
+- Retry Pattern
+- Fallback Pattern
+- Bulkhead Pattern
+- Dead Letter Queue
+- Error Tracking
+- Logging and Monitoring
+- Graceful Degradation
+
+## Scalability Patterns
+- Horizontal Scaling
+- Vertical Scaling
+- Load Balancing
+- Database Sharding
+- Caching
+- Message Queues
+- Microservices
+- Serverless Computing
+
+## Monitoring and Observability Patterns
+- Distributed Tracing
+- Metrics Collection
+- Log Aggregation
+- Alerting
+- Dashboarding
+- APM (Application Performance Monitoring)
+- Synthetic Monitoring
+- Real User Monitoring (RUM)
