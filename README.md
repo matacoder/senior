@@ -45,6 +45,10 @@ This repository contains questions and answers for Senior and Lead Python develo
   * [Exception Groups (Python 3.11+)](#exception-groups-python-311)
   * [Type Parameter Syntax (Python 3.12+)](#type-parameter-syntax-python-312)
   * [Per-Interpreter GIL (Python 3.12+)](#per-interpreter-gil-python-312)
+  * [Free-Threaded Python (Python 3.13+)](#free-threaded-python-python-313-experimental)
+  * [JIT Compiler (Python 3.13+)](#jit-compiler-python-313-experimental)
+  * [Improved Interactive Interpreter (Python 3.13+)](#improved-interactive-interpreter-python-313)
+  * [Platform Support (Python 3.13+)](#platform-support-python-313)
 - [Functions in Python](#functions-in-python)
   * [When and how many times are default arguments evaluated?](#when-and-how-many-times-are-default-arguments-evaluated)
   * [`partial`](#partial)
@@ -239,9 +243,19 @@ Python `slice()` function returns a slice object.
 A sequence of objects of any type(`string`, `bytes`, `tuple`, `list` or `range`) or the object which implements `__getitem__()` and `__len__()` method then this object can be sliced using `slice()` method.
 
 ## OrderedDict, DefaultDict
-An OrderedDict is a dictionary subclass that remembers the order that keys were first inserted. The only difference between dict() and OrderedDict() is that:
+An OrderedDict is a dictionary subclass that remembers the order that keys were first inserted.
 
-`OrderedDict` preserves the order in which the keys are inserted. A regular dict doesn't track the insertion order and iterating it gives the values in an arbitrary order. By contrast, the order the items are inserted is remembered by OrderedDict.
+**Important note for Python 3.7+:** Since Python 3.7, regular `dict` objects are guaranteed to maintain insertion order as part of the language specification. However, `OrderedDict` still provides additional features:
+
+| Feature | `dict` | `OrderedDict` |
+|---------|--------|---------------|
+| Equality comparison | Order-independent | Order-sensitive (two OrderedDicts with same items but different order are not equal) |
+| `move_to_end(key, last=True/False)` | Not available | Moves key to either end efficiently |
+| `popitem(last=True/False)` | Only pops from the end (LIFO) | Can pop from either end (LIFO or FIFO) |
+| Memory usage | Lower | Higher |
+| Reordering performance | Not optimized | Optimized for frequent reordering |
+
+Use `OrderedDict` when you need order-sensitive equality checks, `move_to_end()`, or bidirectional `popitem()`.
 
 `Defaultdict` is a container like dictionaries present in the module collections. `Defaultdict` is a sub-class of the dictionary class that returns a dictionary-like object. The functionality of both dictionaries and defaultdict are almost same except for the fact that defaultdict never raises a KeyError. It provides a default value for the key that does not exists.
 
@@ -254,14 +268,28 @@ def def_value():
 d = defaultdict(def_value)
 ```
 
-## `hashable()`
+## Hashable Objects
 
-An object is hashable if it has a hash value that does not change during its entire lifetime. Python has a built-in hash method ( `__hash__()` ) that can be compared to other objects. For comparing it needs `__eq__()` or `__cmp__()` method and if the hashable objects are equal then they have the same hash value. All immutable built-in objects in Python are hashable like tuples while the mutable containers like lists and dictionaries are not hashable. 
+An object is hashable if it has a hash value that does not change during its entire lifetime. Python has a built-in `hash()` function and objects implement hashing via the `__hash__()` method. For comparing, it needs `__eq__()` method (note: `__cmp__()` was removed in Python 3). If hashable objects are equal, they must have the same hash value.
 
-`lambda` and user functions are hashable.
+**Note:** There is no built-in `hashable()` function in Python. To check if an object is hashable, you can use:
+```python
+from collections.abc import Hashable
+isinstance(obj, Hashable)  # Returns True if hashable
+# or simply try:
+try:
+    hash(obj)
+    print("Hashable")
+except TypeError:
+    print("Not hashable")
+```
 
-Objects hashed using `hash()` are irreversible, leading to loss of information.
-`hash()` returns hashed value only for immutable objects, hence can be used as an indicator to check for mutable/immutable objects.
+All immutable built-in objects in Python are hashable (int, str, tuple, frozenset) while mutable containers (list, dict, set) are not hashable.
+
+`lambda` and user-defined functions are hashable (they hash by identity).
+
+Objects hashed using `hash()` produce irreversible values (one-way function).
+`hash()` raises `TypeError` for unhashable objects, which can be used to check mutability.
 
 ## Strong and weak typing
 
@@ -296,7 +324,7 @@ Python raw string is created by prefixing a string literal with 'r' or 'R'. Pyth
 
 ## Unicode and ASCII strings	
 
-Unicode is international standard where a mapping of individual characters and a unique number is maintained. As of May 2019, the most recent version of Unicode is 12.1 which contains over 137k characters including different scripts including English, Hindi, Chinese and Japanese, as well as emojis. These 137k characters are each represented by a unicode code point. So unicode code points refer to actual characters that are displayed.
+Unicode is international standard where a mapping of individual characters and a unique number is maintained. Python's `unicodedata` module uses the Unicode Character Database (UCD). As of Python 3.13+, Python uses **Unicode 16.0.0** (released September 2024), which contains over 154,000 characters including different scripts (English, Hindi, Chinese, Japanese, etc.) as well as emojis. These characters are each represented by a unicode code point. So unicode code points refer to actual characters that are displayed.
 These code points are encoded to bytes and decoded from bytes back to code points. Examples: Unicode code point for alphabet a is U+0061, emoji 🖐 is U+1F590, and for Ω is U+03A9.
 
 The main takeaways in Python are:
@@ -417,22 +445,75 @@ def first[T](items: list[T]) -> T:
 ```
 
 ## Per-Interpreter GIL (Python 3.12+)
-The Per-Interpreter GIL feature allows for better concurrency by providing separate GILs for different interpreters.
+The Per-Interpreter GIL feature (PEP 684) allows for better concurrency by providing separate GILs for different interpreters.
 
 ### Key Features:
-- Sub-interpreter support with separate GIL
-- Improved concurrency with multiple interpreters
-- Example:
-```python
-import subinterpreter
+- Each subinterpreter can have its own GIL, enabling true parallelism
+- Subinterpreters are "like a cross between using threads and processes"
+- Extension modules must support multi-phase initialization (PEP 489) to work with per-interpreter GIL
 
-def run_in_subinterpreter():
-    with subinterpreter.create() as interp:
-        interp.run("""
-            import threading
-            # Each subinterpreter has its own GIL
-        """)
+### API Evolution:
+- **Python 3.12**: Per-interpreter GIL available only through C-API
+- **Python 3.13**: Basic `interpreters` module (from `test.support`)
+- **Python 3.14**: `InterpreterPoolExecutor` in `concurrent.futures` and full `interpreters` module (PEP 734)
+
+### Example (Python 3.14+):
+```python
+from concurrent.futures import InterpreterPoolExecutor
+
+def cpu_bound_task(n):
+    return sum(i * i for i in range(n))
+
+# Each interpreter has its own GIL - true parallelism!
+with InterpreterPoolExecutor(max_workers=4) as executor:
+    results = list(executor.map(cpu_bound_task, [10**6, 10**6, 10**6, 10**6]))
 ```
+
+**Note:** For Python 3.12-3.13, you can use `from test.support import interpreters` for testing purposes, but this is not a stable public API.
+
+## Free-Threaded Python (Python 3.13+, Experimental)
+Python 3.13 introduced an experimental free-threaded build mode (PEP 703) that completely disables the GIL, allowing true multi-threaded parallelism.
+
+### Key Features:
+- **No GIL:** Threads can run truly in parallel on multiple CPU cores
+- **Experimental:** Available as a separate build option (`--disable-gil`)
+- **Thread safety:** Uses fine-grained locking instead of the GIL
+- **Compatibility:** Most pure Python code works; C extensions may need updates
+
+### How to Use:
+```bash
+# Install free-threaded Python (e.g., via pyenv or official installers)
+python3.13t  # 't' suffix indicates free-threaded build
+
+# Check if running free-threaded build
+import sys
+print(sys._is_gil_enabled())  # False in free-threaded build
+```
+
+### Performance Notes:
+- Single-threaded performance may be 5-10% slower (improved in Python 3.14)
+- Multi-threaded CPU-bound workloads can see significant speedups
+- I/O-bound code benefits less (GIL was already released during I/O)
+
+## JIT Compiler (Python 3.13+, Experimental)
+Python 3.13 added an experimental Just-In-Time (JIT) compiler (PEP 744) based on the "copy-and-patch" technique.
+
+### Key Features:
+- Disabled by default, must be enabled at build time
+- Modest performance improvements in initial release
+- Expected to improve significantly in future versions
+- Works alongside the existing specializing adaptive interpreter (PEP 659)
+
+## Improved Interactive Interpreter (Python 3.13+)
+Python 3.13 includes a new REPL based on PyPy's, with:
+- Multi-line editing with history preservation
+- Color support for prompts and tracebacks
+- Direct support for `help`, `exit`, `quit` without parentheses
+- F1 for interactive help browsing
+
+## Platform Support (Python 3.13+)
+- **iOS:** Now a PEP 11 supported platform (Tier 3)
+- **Android:** Now a PEP 11 supported platform (Tier 3)
 
 # Functions in Python	
 
@@ -823,13 +904,14 @@ If the class also defines `__getattr__()`, the latter will not be called unless 
 ```python
 >>> class Frob(object):
 ...     def __getattribute__(self, name):
-...         print "getting `{}`".format(str(name))
-...         object.__getattribute__(self, name)
+...         print(f"getting `{name}`")
+...         return object.__getattribute__(self, name)
 ...
 >>> f = Frob()
 >>> f.bamf = 10
 >>> f.bamf
 getting `bamf`
+10
 ```
 
 ## Name mangling
@@ -1308,18 +1390,40 @@ And there are MagicMock and Async Mock as well.
 
 Coverage.py is one of the most popular code coverage tools for Python. It uses code analysis tools and tracing hooks provided in Python standard library to measure coverage. It runs on major versions of CPython, PyPy, Jython and IronPython. You can use Coverage.py with both unittest and Pytest.
 
-## nosetests, doctests	
+## Testing Frameworks: pytest, unittest, doctests
 
-`nose2` is the successor to nose.  It's unittest with plugins.
+**Note:** The original `nose` project is no longer maintained (last release 2015). `nose2` exists but is also not actively developed. **`pytest` is now the de facto standard** for Python testing.
 
-`nose2` is a new project and does not support all of the features of nose. See differences for a thorough rundown.
+### pytest (Recommended)
+```python
+# test_example.py
+def test_addition():
+    assert 1 + 1 == 2
 
-`nose2`'s purpose is to extend unittest to make testing nicer and easier to understand.
+def test_string():
+    assert "hello".upper() == "HELLO"
+```
 
-nose2 vs pytest
-nose2 may or may not be a good fit for your project.
+```bash
+pytest test_example.py -v
+```
 
-If you are new to python testing, we encourage you to also consider `pytest`, a popular testing framework.
+**Key pytest features:**
+- Simple `assert` statements (no special assertion methods needed)
+- Powerful fixtures for setup/teardown
+- Parametrized tests
+- Rich plugin ecosystem
+- Better output and debugging
+
+### unittest (Standard Library)
+Built into Python, follows xUnit pattern:
+```python
+import unittest
+
+class TestExample(unittest.TestCase):
+    def test_addition(self):
+        self.assertEqual(1 + 1, 2)
+```
 
 The doctest module searches for pieces of text that look like interactive Python sessions, and then executes those sessions to verify that they work exactly as shown. There are several common ways to use doctest:
 
@@ -1446,14 +1550,14 @@ Past efforts to create a "free-threaded" interpreter (one which locks shared dat
 
 ```python
 >>> import sys
->>> # The interval is set to 100 instructions:
->>> sys.getcheckinterval()
-100
-
-# new python^
+>>> # Python 2.x used sys.getcheckinterval() (removed in Python 3.2)
+>>> # Python 3.2+ uses time-based switching instead of instruction-based:
 >>> sys.getswitchinterval()
-0.005
+0.005  # 5 milliseconds - the interval between thread switches
+>>> sys.setswitchinterval(0.01)  # Can be adjusted if needed
 ```
+
+**Note:** `sys.getcheckinterval()` and `sys.setcheckinterval()` were removed in Python 3.2. The old approach checked every N instructions; the new approach uses a time-based interval (default 5ms) which is more fair and predictable.
 
 The problem in this mechanism was that most of the time the CPU-bound thread would reacquire the GIL itself before other threads could acquire it. This was researched by David Beazley and visualizations can be found here.
 
@@ -1607,23 +1711,22 @@ PyObject *pyfunc(PyObject *self, PyObject *args)
     return result;
 }
 ```
-Mixing C and Python (please don't do it without glasses):
+Mixing C and Python:
 
-```javascript
-include <Python.h>
+**Note:** `PyEval_InitThreads()` is deprecated since Python 3.9 and removed in Python 3.13. Since Python 3.7, the GIL is always initialized, so explicit initialization is no longer needed. For modern Python (3.9+), simply use the GIL macros directly:
+
+```c
+#include <Python.h>
 ...
-if (!PyEval_ThreadsInitialized())
-{
-    PyEval_InitThreads();
-}
-...
+// No need for PyEval_InitThreads() in Python 3.9+
+// Just use Py_BEGIN_ALLOW_THREADS / Py_END_ALLOW_THREADS as needed
 ```
 
 
 # Distributing and documentation in Python	
 ## `distutils`, setup.py	
 
-`distutils` is deprecated with removal planned for Python 3.12. See the What's New entry for more information.
+**`distutils` has been removed in Python 3.12.** It was deprecated in Python 3.10 and finally removed. See PEP 632 for more information.
 
 Most Python users will not want to use this module directly, but instead use the cross-version tools maintained by the Python Packaging Authority. In particular, `setuptools` is an enhanced alternative to distutils that provides:
 
@@ -1757,24 +1860,44 @@ static struct PyModuleDef fputsmodule = {
 };
 ```
 
-Build it with `distutils` setup.py:
+Build it with `setuptools` (note: `distutils` was removed in Python 3.12):
 
-```python
-from distutils.core import setup, Extension
+**Modern approach using pyproject.toml:**
+```toml
+# pyproject.toml
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
 
-def main():
-    setup(name="fputs",
-          version="1.0.0",
-          description="Python interface for the fputs C library function",
-          author="<your name>",
-          author_email="your_email@gmail.com",
-          ext_modules=[Extension("fputs", ["fputsmodule.c"])])
+[project]
+name = "fputs"
+version = "1.0.0"
+description = "Python interface for the fputs C library function"
 
-if __name__ == "__main__":
-    main()
+[tool.setuptools]
+ext-modules = [
+    {name = "fputs", sources = ["fputsmodule.c"]}
+]
 ```
 
-`python3 setup.py install`
+**Legacy approach using setup.py:**
+```python
+from setuptools import setup, Extension
+
+setup(
+    name="fputs",
+    version="1.0.0",
+    description="Python interface for the fputs C library function",
+    ext_modules=[Extension("fputs", ["fputsmodule.c"])]
+)
+```
+
+```bash
+# Modern build command
+pip install build
+python -m build
+pip install dist/*.whl
+```
 
 ```python
 >>> import fputs
@@ -1851,7 +1974,7 @@ That's it. We're done. We can now build this as a shared library. The resulting 
 
 ```python
 >>> import hello_ext
->>> print hello_ext.greet()
+>>> print(hello_ext.greet())
 hello, world
 ```
 
